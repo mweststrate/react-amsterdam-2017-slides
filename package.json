@@ -1,0 +1,24 @@
+{
+  "name": "reactive2016",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "config": {
+    "build": "--output-file index.html --style slides.css --template template.html --script slides.js  --include-remark slides.md"
+  },
+  "scripts": {
+    "build": "markdown-to-slides $npm_package_config_build",
+    "watch": "gaze \"npm run build\" \"*\" \"!node_modules/**/*\" \"!index.html\"",
+    "start": "concurrently \"servant -p 3002\" \"npm run watch\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "markdown-to-slides": "^1.0.3",
+    "servant": "^4.4.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.1.0",
+    "gaze-cli": "^0.2.0"
+  }
+}
