@@ -34,6 +34,12 @@ _Focus on what you want to achieve. Ignore how it should affect your application
 
 ---
 
+...Leads to productivity
+
+https://twitter.com/maxdeviant/status/823562742036459520
+
+---
+
 2. Eliminates bugs related to cascading updates
 
 _If the name of the user changes, don't forget to update the entry in the lookup table..._
@@ -64,18 +70,18 @@ The MobX taxes system:
 
 <table width="100%">
     <tr>
-        <td rowspan="2" style="background:yellow; height: 300px; width: 33%">
+        <td rowspan="2" class="box-actions">
             Box 4: Actions: Modify state
         </td>
-        <td rowspan="2" style="background:cyan; width: 33%">
+        <td rowspan="2" class="box-state">
             Box 1: State: observable (complex) values
         </td>
-        <td  style="background:lightgreen; width: 33%; height: 50%;">
+        <td class="box-computed">
             Box 2: Computed values: observable, derived values
         </td>
     </tr>
     <tr>
-        <td  style="background:red">
+        <td class="box-reactions">
             Box 3: Reactions: Run side effects when needed
         </td>
     </tr>
@@ -267,6 +273,12 @@ class TodoStore {
         this.todos.remove(todo)
     }
 ```
+---
+
+# Real life example
+
+https://github.com/lionsharecapital/lionshare-desktop/blob/master/src/stores/PricesStore.js
+
 
 ---
 

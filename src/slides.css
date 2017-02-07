@@ -153,11 +153,6 @@ div.lighten {
     opacity: 0.6 !important;
 }
 
-.lastslide {
-    text-align: right;
-    opacity: 0.99 !important;
-}
-
 .whitebg {
     background-color: white !important;
 }
@@ -171,4 +166,30 @@ div.lighten {
     width: 1210px;
     margin-left: 80px;
     margin-top: 149px;
+}
+
+/* ---- */
+
+.box-actions {
+    background-color: #f99b1d;
+    width: 30%;
+    height: 300px;
+}
+
+.box-state {
+    background-color: #1780b9;
+    width: 30%;
+    height: 300px;
+}
+
+.box-computed {
+    background-color: #76ca02;
+    width: 30%;
+    height: 150px;
+}
+
+.box-reactions {
+    background-color: #888888;
+    width: 30%;
+    height: 150px;
 }

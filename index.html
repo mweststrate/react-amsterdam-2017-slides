@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>MobX patterns</title>
+		<title>MobX State Management Patterns</title>
 		<style>
 			@import 'https://fonts.googleapis.com/css?family=Cormorant+Garamond';
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
@@ -159,11 +159,6 @@ div.lighten {
     opacity: 0.6 !important;
 }
 
-.lastslide {
-    text-align: right;
-    opacity: 0.99 !important;
-}
-
 .whitebg {
     background-color: white !important;
 }
@@ -178,202 +173,469 @@ div.lighten {
     margin-left: 80px;
     margin-top: 149px;
 }
+
+/* ---- */
+
+.box-actions {
+    background-color: #f99b1d;
+    width: 30%;
+    height: 300px;
+}
+
+.box-state {
+    background-color: #1780b9;
+    width: 30%;
+    height: 300px;
+}
+
+.box-computed {
+    background-color: #76ca02;
+    width: 30%;
+    height: 150px;
+}
+
+.box-reactions {
+    background-color: #888888;
+    width: 30%;
+    height: 150px;
+}
+
 		</style>
 	</head>
 	<body>
 		<textarea id="source">
-<!-- 0_intro.md-->
+<!-- 00_intro.md-->
 
-TEST
+## MobX State Management Patterns
 
---
+Michel Weststrate - Mendix - @mweststrate
+
+<img src="img/mobx2.png" height="150px" />
+
+<img src="img/logo-mendix-white-type.png" height="80px" />
+---
+
+# Contents
+
+1. Thinking in derivations
+2. MobX basics
+4. Recipes
+   * forms
+   * async
+   * designing stores
+   * dependency injection
+   * testing
+   * time
+   * routing
+3. How is MobX different?
+5. Q & A
+
+---
+
 
 
 
 ---
-<!-- slides.md-->
+<!-- 02_derivations.md-->
 
-## MobX patterns
-
-Michel Weststrate - @mweststrate
-
-MobX - Mendix
-
-<img src="img/mobx2.png" width="150px" />
+## 1. Thinking in derivations
 
 ---
 
-# MobX
+# Most complex things in programming?
 
-Simple & Scalabe State Management
-
-Transparent Reactive Programming Library
-
----
-
-MobX:
-
-1. Find minimal state that expresses the state of your app
-2. Derive all other things from the minimal state
-3. MobX keeps derivations in sync using runtime analysis
+1. .appear[Caching]
+2. .appear[Naming things]
 
 ---
 
-Advantages
+# Most complex things in life?
+
+2. .appear[The Dutch Tax System]
+1. .appear[Marriage]
 
 ---
 
-1. Super simple to write
+# Dutch Tax System: 3 Boxes
 
-_Focus on what you want to achieve. Ignore how it should affect your application. It will be derived._
-
----
-
-2. Eliminates bugs related to cascading updates
-
-_If the name of the user changes, don't forget to update the entry in the lookup table..._
+* box 1: belastbaar inkomen uit werk en woning
+* box 2: belastbaar inkomen uit aanmerkelijk belang
+* box 3: belastbaar inkomen uit sparen en beleggen
 
 ---
 
-3. Eliminates bugs related to staleness
+# Dutch Tax System: 3 Boxes
 
-_If the name of the user changes, don't forget to redraw the toolbar and all his tweets..._
-
-TWITTER IMG
+If you have income in multiple boxes, this income is processed separately: Different rates apply for the taxable income in box 1, 2 and 3. The rates are equal to the rates that apply for residents in the Netherlands <i>(only available in Dutch)</i>.
 
 ---
 
-4. Fine grained updates perform much better then event based updates
+# Dutch Tax System: 3 Boxes
 
-_Don't notify all tweet components, only those who will be affected by this change..._
-
----
-
-Demo
+TL;DR: Put money in the wrong box, and all your money are belong to us.
 
 ---
 
-# Thinking in MobX
+# Apps: 3 Boxes
 
-The MobX taxes system:
+---
 
 <table width="100%">
     <tr>
-        <td rowspan="2" style="background:yellow; height: 300px; width: 33%">
-            Box 4: Actions: Modify state
+        <td rowspan="2" class="box-actions">
+            <div class="appear">Box 4: Modify data</appear>
         </td>
-        <td rowspan="2" style="background:cyan; width: 33%">
-            Box 1: State: observable (complex) values
+        <td rowspan="2" class="box-state">
+            <div>Box 1: The data your app is about</div>
         </td>
-        <td  style="background:lightgreen; width: 33%; height: 50%;">
-            Box 2: Computed values: observable, derived values
+        <td class="box-computed">
+            <div class="appear">Box 2: Things that could be computed from data</appear>
         </td>
     </tr>
     <tr>
-        <td  style="background:red">
-            Box 3: Reactions: Run side effects when needed
+        <td class="box-reactions">
+            <div class="appear">Box 3: Freaking side effects</appear>
         </td>
     </tr>
 </table>
 
 ---
 
-# Excercise
+# Why?
 
-<img src="img/excel.png" width="80%" />
+<img src="img/excel.png" height="150px" />
 
----
-
-What is the price of a product including VAT?
-
-COLORS
-
-* .appear[Price of a product _excluding_ VAT?] .appear[Box 1]
-* .appear[Price of a product _including_ VAT?] .appear[Box 2]
-* .appear[VAT rate?] .appear[Box 1]
-* .appear[Changing the VAT reate?] .appear[Box 4]
-* .appear[Rendering the price of a product in the DOM?] .appear[Box 3]
-* .appear[Sending an SMS with the updated price?] .appear[Box 3]
+* .appear[Pattern used in the most successful software product]
+* .appear[Natural way of thinking]
 
 ---
 
-Some tax rules:
-
-COLORS
-
-* It is simply impossible to observe a stale derived (Box 2) value
-* MobX won't update computed values (Box 2) that are not (indirectly) in use by a reaction (Box 3)
-* (Unless explicitly asking for it)
-* In strict mode, only actions (Box 4) can modify state (Box 1)
-* If you compute a new value in Box 3 (reaction) it probably belongs to Box 2
-* Before an action ends, all affected derived values will be updated, and all reactions will have fired.
-* For each action, every computed value and reactoin will run only once and the right order
-
----
-
-MobX api:
-
-COLORS
-
-* `@observable`
-* `@computed`
-* `observer`, `autorun`, `reaction`, `when`
-* `@action`
+<table width="100%">
+    <tr>
+        <td rowspan="2" class="box-actions">
+            <div class="appear">Box 4: Users enters data</appear>
+        </td>
+        <td rowspan="2" class="box-state">
+            <div>Box 1: Data Cells</div>
+        </td>
+        <td class="box-computed">
+            <div class="appear">Box 2: Formulas</appear>
+        </td>
+    </tr>
+    <tr>
+        <td class="box-reactions">
+            <div class="appear">Box 3: Draw on screen</appear>
+        </td>
+    </tr>
+</table>
 
 ---
 
-TODO APP (with colors)
+# Exercise: Marriage
 
-
----
-
-# ES 6 Recap
-
-Classes
-
-Field initializers
-
-Decorators
+```javascript
+const elise = {
+    firstName: "Elise",
+    familyName: "Hagendoorn",
+    fullName: // It depends,
+    husband: // on him. maybe.
+}
+```
 
 ---
 
-# Working with observables
+# Exercise: Marriage
 
-Box
-
-Object
-
-Array
-
-Infective / references
-
----
-
-TODO Demo
+```javascript
+function setHusband(wife, husband) {
+    wife.husband = husband
+    wife.lastName = husband ? husband.lastName : wife.familyName
+}
+```
 
 ---
 
-# Organizing your
+# Marriage, what could possibly go wrong?
 
-1. Component state
-2. Domain state
+* .appear[Fights]
+* .appear[Divorce]
+* .appear[Getting broke]
+* .appear[Husband changes last name]
 
 ---
 
-# Component state
+# Marriage, what could possibly go wrong?
 
-Rule of thumb: state that doesn't need to survive a reload
+How to fix marriage:
 
-`setState` or `@observable`?
+* .appear[Keep using own name]
+* .appear[Or derive name]
+
+---
+
+# Exercise: Marriage
+
+```javascript
+const elise = {
+    firstName: "Elise",
+    familyName: "Hagendoorn",
+    get fullName() {
+        return this.firstName + " " +
+            (this.husband ? this.husband.lastName: this.familyName)
+    },
+    husband: null
+}
+```
+
+---
+
+# Exercise: Marriage
+
+* `familyName` .appear[state]
+* `husband` .appear[state]
+* `lastName` .appear[derived value]
+* assigning new husband .appear[action]
+* /me crying in corner .appear[reaction]
+
+---
+
+# MobX
+
+Makes sure changes in 'Data cells' get reflected in Box 2 & 3
+
+---
+
+<table width="100%">
+    <tr>
+        <td rowspan="2" class="box-actions">
+            <div class="appear">Box 4: Actions</appear>
+        </td>
+        <td rowspan="2" class="box-state">
+            <div>Box 1: Observable values</div>
+        </td>
+        <td class="box-computed">
+            <div class="appear">Box 2: Computed values</appear>
+        </td>
+    </tr>
+    <tr>
+        <td class="box-reactions">
+            <div class="appear">Box 3: Reactions</appear>
+        </td>
+    </tr>
+</table>
+
+---
+
+# MobX api:
+
+* Box 1: `@observable`
+* Box 2: `@computed`
+* Box 3: `observer`, `autorun`, `reaction`, `when`
+* Box 4: `@action`
+
+---
+
+Demo:
+
+http://jsbin.com/lusoqe/1/edit?js,console
+
+---
+
+classname: fullscreen
+
+```javascript
+const {observable, reaction, autorun} = mobx;
+
+const elise = observable({
+  firstName: "Elise",
+  familyName: "Hagendoorn",
+  husband: null,
+  get fullName() {
+  	return this.firstName + " " +
+      (this.husband ? this.husband.lastName: this.familyName)
+  }
+})
+
+const michel = observable({
+  firstName: "Michel",
+  lastName: "Weststrate"
+})
+
+reaction(
+  () => elise.husband === michel,
+  (married) => console.log(married ? "Michel happy" : "michel crying")
+)
+
+autorun(() => {
+  console.log(elise.fullName)
+})
+```
+
+---
+
+# Exercise: Multi selection
+
+```javascript
+class TodoStore {
+    todos: Todo[]
+    selectedTodos: Todo[]
+}
+
+class Todo {
+    title: string
+    selected: boolean
+}
+```
+
+---
+
+# Exercise: Multi selection
+
+```javascript
+class TodoStore {
+    @observable todos: Todo[]
+    @computed selectedTodos: Todo[]
+}
+```
+.appear[
+```javascript
+class Todo {
+    @observable title: string
+    @observable selected: boolean
+}
+```
+]
+
+---
+
+# Exercise: Multi selection
+
+```javascript
+class TodoStore {
+    @observable todos: Todo[]
+    @observable selectedTodos: Todo[]
+}
+```
+.appear[
+```javascript
+class Todo {
+    @observable title: string
+    @computed selected: boolean
+}
+```
+]
+
+---
+
+Note, using decorators is optional!
+---
+<!-- 06_forms.md-->
+
+# Forms
+
+https://jsfiddle.net/mweststrate/zhea3d1z/
+
+---
+
+# Observables as component state
+
+* Optional, but used by many MobXites
+* Better optimized and simpler to use than setState
 
 https://twitter.com/mrjjwright/status/822637233417162752
 
-Tip: [3 reasons why I stopped using setState](https://medium.com/@mweststrate/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e#.3tuprki3h)
+[3 reasons why I stopped using setState](https://medium.com/@mweststrate/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e#.pcvfrim32)
+
+---
+<!-- 08_async.md-->
+
+# Async stuff
+
+.appear[Async = two synchronous actions at different points in time]
+
+.appear[Track progress with observables]
 
 ---
 
+# Async stuff
+
+```javascript
+@observable users = []
+@observable requestCount = 0
+
+@action.bound requestUsers() {
+    this.requestCount++
+    window.fetch("https://randomuser.me/api/?results=3")
+        .then(r => r.json())
+        .then(data => {
+            this.users.splice(0, 0, ...data.results)
+            this.requestCount--
+        })
+}
+```
+---
+
+# Async stuff
+
+https://jsfiddle.net/mweststrate/a8az1nnj/3/
+
+---
+
+# Async: last wins
+
+```javascript
+.then(data => {
+    this.users = data.results // doesn't guarantee last fired request wins!
+    this.requestCount--
+})
+
+```
+---
+
+# Async: fromPromise
+
+```javascript
+@observable users
+
+@action.bound requestUsers() {
+    this.users = fromPromise(window.fetch("randomuser.me")
+        .then(r => r.json())
+        .then(data => data.results)
+    )
+}
+```
+
+---
+
+# Async: fromPromise
+
+```javascript
+{ this.users.case({
+    "pending":   () => "loading",
+    "rejected":  (e) => "error: " + e,
+    "fulfilled": (users) => users.map(user =>
+        <div key={user.login.username}>
+            <img src={user.picture.thumbnail} />
+            {user.email}
+        </div>
+    )
+}) }
+```
+
+---
+
+# Async: fromPromise
+
+* Part of `mobxUtils` package
+* https://jsfiddle.net/mweststrate/3LvnpLpg/
+
+---
+<!-- 10_stores.md-->
+
 # Domain State
 
+* "What your app is about"
+* Unlike component state which is volatile
 * Should be reusable, distributable and testable
 * Should not be owned by UI
 * Should not be affected by UI
@@ -420,11 +682,11 @@ class Todo {
 
 ---
 
-Serialization?
+# Serialization?
 
 JSON is just another representation of the state.
 
-Box .appear[2]
+Box 2: Computed values
 
 ---
 
@@ -441,7 +703,7 @@ Box .appear[2]
 ```javascript
     constructor(store, json) {
         // ...
-        // Set up reactin: each time the JSON view changes, submit it
+        // Set up reaction: each time the JSON view changes, submit it
         reaction(
             () => this.asJSON(),
             (data) => this.store.sendToServer(data)
@@ -461,7 +723,14 @@ class TodoStore {
     @action deleteTodo(todo) {
         this.todos.remove(todo)
     }
+}
 ```
+---
+
+# Real life example
+
+https://github.com/lionsharecapital/lionshare-desktop/blob/master/src/stores/PricesStore.js
+
 
 ---
 
@@ -507,24 +776,6 @@ class User {
 ```
 ---
 
-## Client usage
-
-```javascript
-const rootStore = new RootStore(window.fetch)
-
-React.render(
-    <Provider rootStore={rootStore}>
-        <App />
-    </Provider>
-)
-
-rootStore.loadInitialData()
-```
-
-(`Provider` will be discussed later)
-
----
-
 ## Test usage
 
 ```javascript
@@ -539,6 +790,23 @@ test("It should test something, t => {
     })
 })
 ```
+
+---
+
+## Client usage
+
+```javascript
+const rootStore = new RootStore(window.fetch)
+
+React.render(
+    <Provider rootStore={rootStore}>
+        <App />
+    </Provider>
+)
+
+rootStore.loadInitialData()
+```
+
 ---
 
 # Root store
@@ -553,10 +821,293 @@ Test all logic of your app without a single render
 
 ---
 
-<p>egghead.io/courses/mobx-fundamentals</p>
-<p>@mweststrate</p>
+# Provider / inject
+
+* Provider / inject: Inject stores in components
+* Uses context, but: doesn't break shouldComponentUpdate
+* mobx-react package
+* [How to safely use React context](https://medium.com/@mweststrate/how-to-safely-use-react-context-b7e343eff076#.1y806u7cy)
+
+---
+
+# Provider / inject
+
+```javascript
+class App extends React.Component {
+  render() {
+    return <Provider color="red">
+        <div>
+            {this.props.messages.map((message) =>
+                <Message text={message.text} />
+            )}
+        </div>
+    </Provider>;
+  }
+}
+```
+
+---
+
+# Provider / inject
+
+```javascript
+@inject("color") @observer
+class Button extends React.Component {
+  render() {
+    return (
+      <button style={{background: this.props.color}}>
+        {this.props.children}
+      </button>
+    );
+  }
+}
+```
+---
+<!-- 14_now.md-->
+
+# mobxUtils.now()
+
+* Time is the ultimate observable
+* Takes interval. Synchronizes similar intervals.
+* `frame` for requestAnimationFrame
+* [Countdown demo](https://jsfiddle.net/mweststrate/na0qdmkw/)
+---
+<!-- 16_routing.md-->
 
 
+# Making the UI dumb
+
+* The less logic lives in components, the easier your app is to test
+* Portable components and domain logic
+
+---
+
+# The problem
+
+```javascript
+const User = React.createClass({
+  componentDidMount() {
+    this.setState({
+      // route components are rendered with useful information, like URL params
+      user: findUserById(this.props.params.userId)
+    })
+  },
+```
+
+---
+
+# The problem
+
+![routing](img/routing1.png)
+
+* 'Smart' components parse routes and fetch data
+* Breaks view = f(state)
+* Hard to test application flow without testing components
+
+---
+
+# Ideal situation
+
+![img/routing2.png](img/routing2.png)
+
+---
+
+# Capturing navigation state
+
+```javascript
+class ViewStore {
+    @observable currentUser = null;
+    @observable currentView = null;
+}
+```
+
+---
+
+# Navigating programmatically
+
+```javascript
+ @action showOverview() {
+    this.currentView = {
+        name: "overview",
+        documents: fromPromise(fetch(`/json/documents.json`))
+    }
+}
+```
+
+---
+
+# Testing app flow
+
+```javascript
+test("it should be possible to open the documents overview", t => {
+    const viewStore = new ViewStore()
+    viewStore.showOverview()
+
+    t.equal(viewStore.currentView.name, "overview")
+    when(
+        () => viewStore.currentView.documents.state !== "pending",
+        () => {
+            t.equal(viewStore.currentView.documents.state, "fulfilled")
+            t.equal(viewStore.currentView.documents.value.length, 2)
+            t.end()
+        }
+    )
+})
+```
+
+---
+
+# Rendering app to DOM with dumb comps
+
+```javascript
+const App = observer(({viewStore}) => {
+    const view = viewStore.currentView;
+    switch (view.name) {
+        case "overview":
+            return <DocumentOverview documents={view.documents} />
+        default:
+            return <PageNotFound />
+    }
+})
+```
+
+---
+
+# Rendering app to history
+
+```javascript
+@computed get currentPath() {
+    switch(this.currentView.name) {
+        case "overview": return "/document/"
+        case "document": return `/document/${this.currentView.documentId}`
+    }
+}
+```
+
+.appear[
+```javascript
+autorun(() => {
+    const path = viewStore.currentPath
+    if (path !== window.location.pathname)
+            window.history.pushState(null, null, path)
+})
+```
+]
+
+---
+
+```javascript
+import { Router } from 'director';
+
+export function startRouter(store) {
+    // update state on url change
+    const router = new Router({
+        "/document/:documentId": (id) => store.showDocument(id),
+        "/document/": () => store.showOverview()
+    }).configure({
+        notfound: () => store.showOverview(),
+        html5history: true
+    }).init()
+}
+```
+
+---
+
+![img/routing3.png](img/routing3.png)
+
+---
+
+# Solution: view store
+
+* Capture crucial app state in a browser unaware store
+* UI just renders this state
+* Browser url / history is just another derivation
+* Navigation triggers state changes instead of component hooks
+* [How to decouple state and UI (a.k.a. you don’t need componentWillMount)](https://medium.com/@mweststrate/how-to-decouple-state-and-ui-a-k-a-you-dont-need-componentwillmount-cc90b787aa37#.q5ksxr1is)
+
+---
+
+# Libraries
+
+* [mobx-router](https://www.npmjs.com/package/mobx-router) - Hooks, renders comps, store structure
+* [yester](http://basarat.com/yester/#/) - Hooks, strong typed
+* [mobx-react-router](https://www.npmjs.com/package/mobx-react-router) - Simplifies MobX + React-router, like react-router-redux
+
+---
+---
+<!-- 20_comparison.md-->
+
+# MobX:
+
+1. Find minimal state that expresses the state of your app
+2. Derive all other things from the minimal state
+3. MobX keeps derivations in sync using runtime analysis
+
+---
+
+1. Super simple to write
+
+_Focus on what you want to achieve. Ignore how it should affect your application. It will be derived._
+
+---
+
+...Leads to productivity
+
+https://twitter.com/maxdeviant/status/823562742036459520
+
+---
+
+2. Eliminates bugs related to cascading updates
+
+_If the family name changes, don't forget to update spouse name..._
+
+---
+
+3. Eliminates bugs related to staleness
+
+_If the spouce name changes, should be reflected on screen..._
+
+---
+
+4. Fine grained updates perform much better then event based updates
+
+_Don't notify components rendering persons, only those which will be affected by this change..._
+
+---
+
+Demo: https://jsfiddle.net/mweststrate/wv3yopo0/
+
+---
+
+Demo: WebModeler
+
+---
+
+# How does this relate to RxJS?
+
+* .appear[With MobX one reacts to _values_, not to _events_]
+* .appear[MobX does decide to which values. No manual subscribing to `husband$`, `firstName$` etc...]
+* .appear[Events stream are powerfull to control _actions_ or _reactions_, throttling etc!]
+
+---
+
+# How is this different to Angular / Meteor / Ember?
+
+* .appear[Generic applicable, not bound to framework]
+* .appear[No digest loop, but mutation broadcasting (efficient!)]
+* .appear[Predictable: synchronous, glitch-free, optimized]
+
+---
+
+# Redux?
+
+* .appear[Fine grained updates (fast) vs. coarse grained (snapshots, immutability)]
+* .appear[Unopionated vs. opionated]
+* .appear[Keep an eye on `mobx-state-tree` & React-Europe!]
+
+---
+
+## Recipes
 		</textarea>
 		<script>require=(function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({"components/printing":[function(require,module,exports){
 module.exports=require('yoGRCZ');
