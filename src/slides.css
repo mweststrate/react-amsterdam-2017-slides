@@ -8,11 +8,11 @@ h1, h2, h3 {
 
 body {
     font-family: 'Open Sans Condensed', sans-serif;
-    color: white;
+    color: black;
 }
 
 .remark-slide-content {
-    background-color: black;
+    background-color: white;
 }
 
 h1 {
@@ -22,10 +22,11 @@ h1 {
     text-align: center;
     width: calc(1280px - 4em);
     border-bottom: 1px solid #ddd;
+    font-size: 40px;
 }
 
 p, li, div {
-    font-size: 42px;
+    font-size: 36px;
 }
 
 p {
@@ -43,7 +44,7 @@ small {
 
 a, :visited {
     text-decoration: none;
-    color: #666;
+    color: #1780b9;
 }
 
 hr {
@@ -103,7 +104,7 @@ ul, ol {
 .remark-slide-content .appeared pre code,
 .remark-slide-content .boring pre code
 {
-    margin-left: 4em;
+    margin-left: 3em;
 }
 
 .fullscreen {
@@ -171,25 +172,46 @@ div.lighten {
 /* ---- */
 
 .box-actions {
+    color: white;
     background-color: #f99b1d;
     width: 30%;
     height: 300px;
 }
 
 .box-state {
+    color: white;
     background-color: #1780b9;
     width: 30%;
     height: 300px;
 }
 
 .box-computed {
+    color: white;
     background-color: #76ca02;
     width: 30%;
     height: 150px;
 }
 
 .box-reactions {
+    color: white;
     background-color: #888888;
     width: 30%;
     height: 150px;
+}
+
+.box1 {
+    color: #1780b9;
+}
+.box2 {
+    color: #76ca02;
+}
+.box3 {
+    color: #888888;
+}
+.box4 {
+    color: #f99b1d;
+}
+
+.box1, .box2, .box3, .box4 {
+    font-weight: bold;
 }

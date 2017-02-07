@@ -11,12 +11,12 @@
 # Domain State
 
 * Many architectural patterns possible; MobX is unopionated
-* Classes <-> plain objectjs
-* Object graph <-> Object tree
-* Normalized <-> Denormalized Data
-* Class methods <-> Dispatching Actions (Flux)
-* Tip: serializr
-* Tip: mobx-state-tree
+* Classes < > plain objects
+* Object graph < > Object tree
+* Normalized < > Denormalized Data
+* Class methods < > Dispatching Actions (Flux)
+* Tip: [serializr](https://github.com/mobxjs/serializr)
+* Tip: [mobx-state-tree](https://github.com/mobxjs/mobx-state-tree)
 
 ---
 
@@ -48,36 +48,32 @@ class Todo {
 
 ---
 
-# Serialization?
+# Serialization
 
 JSON is just another representation of the state.
-
-Box 2: Computed values
+.box2[So can be derived by MobX]
 
 ---
+
+# Serialization
 
 ```javascript
     @computed get asJSON() {
         return {
             title: this.title,
-            done: tis.done
+            done: this.done
         }
     }
-```
 
-.appear[
-```javascript
     constructor(store, json) {
         // ...
-        // Set up reaction: each time the JSON view changes, submit it
+        // Set up side effect: each time the JSON view changes, submit it
         reaction(
             () => this.asJSON(),
             (data) => this.store.sendToServer(data)
         )
     }
 ```
-]
-
 ---
 
 # Domain Stores
@@ -100,18 +96,22 @@ https://github.com/lionsharecapital/lionshare-desktop/blob/master/src/stores/Pri
 
 ---
 
-# Connecting stores?
+# Connecting multiple stores
 
-* Global imports .appear[-> global state, hard to test / reset]
-* Dependency injection (InversifyJS)
+* Global imports
+* Dependency injection (e.g. InversifyJS)
 * Root store
-  * _One for all, all for one_
-  * No global state
-  * Straight forward
-  * Can provide environment specific things (`fetch`)
-  * Strongly typed
-  * Can be made generic
 
+---
+
+# Root store pattern
+
+* _One for all, all for one_
+* No global state
+* Straight forward
+* Can provide environment specific things (`fetch`)
+* Strongly typed
+* Can be made generic
 
 ---
 
@@ -121,7 +121,8 @@ class RootStore {
     userStore: UserStore
     fetch
 
-    constructor(fetchImpl) {
+    constructor(fetch) {
+        this.fetch = fetch
         this.todoStore = new todoStore(this)
         this.userStore = new userStore(this)
         // etc...
@@ -177,13 +178,9 @@ rootStore.loadInitialData()
 
 # Root store
 
-Scalable pattern:
-* Transpartion layer
-* Browser history management
-* Environment specific configuration
-
-Test all logic of your app without a single render
-* Beware of routing. To be continued.
+* Scalable pattern
+* Abstract away environment specific things
+* Easily testable and zero-state
 
 ---
 
@@ -192,7 +189,7 @@ Test all logic of your app without a single render
 * Provider / inject: Inject stores in components
 * Uses context, but: doesn't break shouldComponentUpdate
 * mobx-react package
-* [How to safely use React context](https://medium.com/@mweststrate/how-to-safely-use-react-context-b7e343eff076#.1y806u7cy)
+* [Blog: How to safely use React context](https://medium.com/@mweststrate/how-to-safely-use-react-context-b7e343eff076#.1y806u7cy)
 
 ---
 
@@ -201,13 +198,15 @@ Test all logic of your app without a single render
 ```javascript
 class App extends React.Component {
   render() {
-    return <Provider color="red">
-        <div>
-            {this.props.messages.map((message) =>
-                <Message text={message.text} />
-            )}
-        </div>
-    </Provider>;
+    return (
+        <Provider color="red">
+            <div>
+                {this.props.messages.map((message) =>
+                    <Message text={message.text} />
+                )}
+            </div>
+        </Provider>
+    )
   }
 }
 ```
@@ -224,7 +223,7 @@ class Button extends React.Component {
       <button style={{background: this.props.color}}>
         {this.props.children}
       </button>
-    );
+    )
   }
 }
 ```

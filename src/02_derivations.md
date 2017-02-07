@@ -9,7 +9,7 @@
 
 ---
 
-# Most complex things in life?
+# Solving complex problems with MobX
 
 2. .appear[The Dutch Tax System]
 1. .appear[Marriage]
@@ -18,21 +18,21 @@
 
 # Dutch Tax System: 3 Boxes
 
-* box 1: belastbaar inkomen uit werk en woning
-* box 2: belastbaar inkomen uit aanmerkelijk belang
-* box 3: belastbaar inkomen uit sparen en beleggen
+* .box1[box 1]: belastbaar inkomen uit werk en woning
+* .box2[box 2]: belastbaar inkomen uit aanmerkelijk belang
+* .box3[box 3]: belastbaar inkomen uit sparen en beleggen
 
 ---
 
 # Dutch Tax System: 3 Boxes
 
-If you have income in multiple boxes, this income is processed separately: Different rates apply for the taxable income in box 1, 2 and 3. The rates are equal to the rates that apply for residents in the Netherlands <i>(only available in Dutch)</i>.
+If you have income in multiple boxes, this income is processed separately: Different rates apply for the taxable income in box 1, 2 and 3. The rates are equal to the rates that apply for residents in the Netherlands.
 
 ---
 
 # Dutch Tax System: 3 Boxes
 
-TL;DR: Put money in the wrong box, and all your money are belong to us.
+TL;DR: Put money in the wrong box, and all your monies are belong to us.
 
 ---
 
@@ -49,7 +49,7 @@ TL;DR: Put money in the wrong box, and all your money are belong to us.
             <div>Box 1: The data your app is about</div>
         </td>
         <td class="box-computed">
-            <div class="appear">Box 2: Things that could be computed from data</appear>
+            <div class="appear">Box 2: Data that could be computed from other data</appear>
         </td>
     </tr>
     <tr>
@@ -151,17 +151,17 @@ const elise = {
 
 # Exercise: Marriage
 
-* `familyName` .appear[state]
-* `husband` .appear[state]
-* `lastName` .appear[derived value]
-* assigning new husband .appear[action]
-* /me crying in corner .appear[reaction]
+* .appear[.box1[familyName]]
+* .appear[.box1[husband]]
+* .appear[.box2[lastName]]
+* .appear[.box4[assigning new husband]]
+* .appear[.box3[/me going to cry in corner]]
 
 ---
 
 # MobX
 
-Makes sure changes in 'Data cells' get reflected in Box 2 & 3
+Makes sure .box1[data] is always, automatically and efficiently reflected in .box2[derived values] and that necessary .box3[side effects] are fired.
 
 ---
 
@@ -188,23 +188,23 @@ Makes sure changes in 'Data cells' get reflected in Box 2 & 3
 
 # MobX api:
 
-* Box 1: `@observable`
-* Box 2: `@computed`
-* Box 3: `observer`, `autorun`, `reaction`, `when`
-* Box 4: `@action`
+* Box 1: .box1[`@observable`]
+* Box 2: .box2[`@computed`]
+* Box 3: .box3[`observer`, `autorun`, `reaction`, `when`]
+* Box 4: .box4[`@action`]
 
 ---
 
-Demo:
-
-http://jsbin.com/lusoqe/1/edit?js,console
+Note, using decorators is optional!
 
 ---
 
-classname: fullscreen
+[Demo](http://jsbin.com/lusoqe/1/edit?js,console)
+
+---
 
 ```javascript
-const {observable, reaction, autorun} = mobx;
+const {observable} = mobx;
 
 const elise = observable({
   firstName: "Elise",
@@ -220,11 +220,16 @@ const michel = observable({
   firstName: "Michel",
   lastName: "Weststrate"
 })
+```
 
-reaction(
-  () => elise.husband === michel,
-  (married) => console.log(married ? "Michel happy" : "michel crying")
-)
+---
+
+```javascript
+const {observable, reaction, autorun} = mobx;
+
+autorun(() => {
+  console.log(elise.husband === michel ? "Michel happy" : "michel crying")
+})
 
 autorun(() => {
   console.log(elise.fullName)
@@ -256,15 +261,12 @@ class TodoStore {
     @observable todos: Todo[]
     @computed selectedTodos: Todo[]
 }
-```
-.appear[
-```javascript
+
 class Todo {
     @observable title: string
     @observable selected: boolean
 }
 ```
-]
 
 ---
 
@@ -275,16 +277,9 @@ class TodoStore {
     @observable todos: Todo[]
     @observable selectedTodos: Todo[]
 }
-```
-.appear[
-```javascript
+
 class Todo {
     @observable title: string
     @computed selected: boolean
 }
 ```
-]
-
----
-
-Note, using decorators is optional!

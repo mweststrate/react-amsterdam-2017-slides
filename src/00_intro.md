@@ -1,10 +1,11 @@
+<img src="img/mobx2.png" height="80px" />
+
 ## MobX State Management Patterns
 
 Michel Weststrate - Mendix - @mweststrate
+<br/><br/>
 
-<img src="img/mobx2.png" height="150px" />
-
-<img src="img/logo-mendix-white-type.png" height="80px" />
+<img src="img/mendix-logo.png" height="80px" />
 ---
 
 # Contents
@@ -12,15 +13,9 @@ Michel Weststrate - Mendix - @mweststrate
 1. Thinking in derivations
 2. MobX basics
 4. Recipes
-   * forms
-   * async
-   * designing stores
-   * dependency injection
-   * testing
-   * time
-   * routing
 3. How is MobX different?
 5. Q & A
+
 
 ---
 

@@ -1,7 +1,7 @@
 # MobX:
 
-1. Find minimal state that expresses the state of your app
-2. Derive all other things from the minimal state
+1. Find minimal set of .box1[observables] that expresses the state of your app
+2. .box2[Derive all other things] from the minimal state
 3. MobX keeps derivations in sync using runtime analysis
 
 ---
@@ -14,7 +14,7 @@ _Focus on what you want to achieve. Ignore how it should affect your application
 
 ...Leads to productivity
 
-https://twitter.com/maxdeviant/status/823562742036459520
+![productive](img/productive.png)
 
 ---
 
@@ -34,6 +34,13 @@ _If the spouce name changes, should be reflected on screen..._
 
 _Don't notify components rendering persons, only those which will be affected by this change..._
 
+---
+
+![fast](img/fast.png)
+
+.appear[
+# Q & A time!
+]
 ---
 
 Demo: https://jsfiddle.net/mweststrate/wv3yopo0/
@@ -65,7 +72,3 @@ Demo: WebModeler
 * .appear[Fine grained updates (fast) vs. coarse grained (snapshots, immutability)]
 * .appear[Unopionated vs. opionated]
 * .appear[Keep an eye on `mobx-state-tree` & React-Europe!]
-
----
-
-## Recipes

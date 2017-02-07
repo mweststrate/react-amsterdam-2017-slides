@@ -4,6 +4,8 @@
 
 .appear[Track progress with observables]
 
+.appear[Nothing special about it]
+
 ---
 
 # Async stuff
@@ -30,27 +32,29 @@ https://jsfiddle.net/mweststrate/a8az1nnj/3/
 
 ---
 
-# Async: last wins
-
-```javascript
-.then(data => {
-    this.users = data.results // doesn't guarantee last fired request wins!
-    this.requestCount--
-})
-
-```
----
-
 # Async: fromPromise
 
 ```javascript
 @observable users
 
 @action.bound requestUsers() {
-    this.users = fromPromise(window.fetch("randomuser.me")
+    this.users = fromPromise(
+        window.fetch("randomuser.me")
         .then(r => r.json())
         .then(data => data.results)
     )
+}
+```
+
+---
+
+# fromPromise creates observable promise wrapper
+
+```javascript
+class observablePromise<T> {
+    @observable state: string
+    @observable value: T
+    case<R>({fulfilled, rejected, pending}): R
 }
 ```
 

@@ -12,7 +12,6 @@
 const User = React.createClass({
   componentDidMount() {
     this.setState({
-      // route components are rendered with useful information, like URL params
       user: findUserById(this.props.params.userId)
     })
   },
@@ -68,11 +67,12 @@ test("it should be possible to open the documents overview", t => {
     viewStore.showOverview()
 
     t.equal(viewStore.currentView.name, "overview")
+    const docs = viewStore.currentView.documents
     when(
-        () => viewStore.currentView.documents.state !== "pending",
+        () => docs.state !== "pending",
         () => {
-            t.equal(viewStore.currentView.documents.state, "fulfilled")
-            t.equal(viewStore.currentView.documents.value.length, 2)
+            t.equal(docs.state, "fulfilled")
+            t.equal(docs.value.length, 2)
             t.end()
         }
     )
@@ -120,11 +120,12 @@ autorun(() => {
 
 ---
 
+# Updating state when location changes
+
 ```javascript
 import { Router } from 'director';
 
 export function startRouter(store) {
-    // update state on url change
     const router = new Router({
         "/document/:documentId": (id) => store.showDocument(id),
         "/document/": () => store.showOverview()
@@ -137,17 +138,17 @@ export function startRouter(store) {
 
 ---
 
-![img/routing3.png](img/routing3.png)
+<img src="img/routing3.png" width="900px" />
 
 ---
 
-# Solution: view store
+# Dumb UI: create a view store
 
 * Capture crucial app state in a browser unaware store
 * UI just renders this state
 * Browser url / history is just another derivation
 * Navigation triggers state changes instead of component hooks
-* [How to decouple state and UI (a.k.a. you don’t need componentWillMount)](https://medium.com/@mweststrate/how-to-decouple-state-and-ui-a-k-a-you-dont-need-componentwillmount-cc90b787aa37#.q5ksxr1is)
+* [Blog: How to decouple state and UI (a.k.a. you don’t need componentWillMount)](https://medium.com/@mweststrate/how-to-decouple-state-and-ui-a-k-a-you-dont-need-componentwillmount-cc90b787aa37#.q5ksxr1is)
 
 ---
 
@@ -156,5 +157,5 @@ export function startRouter(store) {
 * [mobx-router](https://www.npmjs.com/package/mobx-router) - Hooks, renders comps, store structure
 * [yester](http://basarat.com/yester/#/) - Hooks, strong typed
 * [mobx-react-router](https://www.npmjs.com/package/mobx-react-router) - Simplifies MobX + React-router, like react-router-redux
-
+* [mobx-location](https://www.npmjs.com/package/mobx-location) - Window.location as observable
 ---
