@@ -200,7 +200,7 @@ div.lighten {
 
 .box-reactions {
     color: white;
-    background-color: #888888;
+    background-color: orangered;
     width: 30%;
     height: 150px;
 }
@@ -212,7 +212,7 @@ div.lighten {
     color: #76ca02;
 }
 .box3 {
-    color: #888888;
+    color: orangered;
 }
 .box4 {
     color: #f99b1d;
@@ -234,7 +234,13 @@ div.lighten {
 Michel Weststrate - Mendix - @mweststrate
 <br/><br/>
 
-<img src="img/mendix-logo.png" height="80px" />
+<img src="img/mendix-logo.png" height="80px" /><br/>
+<small>(Nr 1. best tech employer in NL according to Glassdoor.com)</small>
+
+---
+
+[http://mobx-patterns.surge.sh](http://mobx-patterns.surge.sh)
+
 ---
 
 # Contents
@@ -242,8 +248,8 @@ Michel Weststrate - Mendix - @mweststrate
 1. Thinking in derivations
 2. MobX basics
 4. Recipes
-3. How is MobX different?
 5. Q & A
+3. How is MobX different?
 
 
 ---
@@ -373,9 +379,18 @@ function setHusband(wife, husband) {
 
 # Marriage, what could possibly go wrong?
 
+.appear[
+```javascript
+function setHusband(wife, husband) {
+    wife.husband = husband
+    wife.lastName = husband ? husband.lastName : wife.familyName
+}
+```
+]
+
+* .appear[Getting broke]
 * .appear[Fights]
 * .appear[Divorce]
-* .appear[Getting broke]
 * .appear[Husband changes last name]
 
 ---
@@ -446,16 +461,12 @@ Makes sure .box1[data] is always, automatically and efficiently reflected in .bo
 
 * Box 1: .box1[`@observable`]
 * Box 2: .box2[`@computed`]
-* Box 3: .box3[`observer`, `autorun`, `reaction`, `when`]
+* Box 3: .box3[`autorun` (`observer`, `reaction`, `when`)]
 * Box 4: .box4[`@action`]
 
 ---
 
 Note, using decorators is optional!
-
----
-
-[Demo](http://jsbin.com/lusoqe/1/edit?js,console)
 
 ---
 
@@ -484,13 +495,17 @@ const michel = observable({
 const {observable, reaction, autorun} = mobx;
 
 autorun(() => {
-  console.log(elise.husband === michel ? "Michel happy" : "michel crying")
+  console.log(elise.husband === michel ? "Michel happy" : "Michel crying")
 })
 
 autorun(() => {
   console.log(elise.fullName)
 })
 ```
+
+---
+
+[Demo](http://jsbin.com/lusoqe/1/edit?js,console)
 
 ---
 
@@ -531,12 +546,32 @@ class Todo {
 ```javascript
 class TodoStore {
     @observable todos: Todo[]
+    @computed get selectedTodos() {
+        return this.tods.filter(t => t.selected)
+    }
+}
+
+class Todo {
+    @observable title: string
+    @observable selected: boolean
+}
+```
+
+---
+
+# Exercise: Multi selection
+
+```javascript
+class TodoStore {
+    @observable todos: Todo[]
     @observable selectedTodos: Todo[]
 }
 
 class Todo {
     @observable title: string
-    @computed selected: boolean
+    @computed get selected() {
+        return this.todoStore.selectedTodos.indexOf(this) !== -1
+    }
 }
 ```
 
@@ -563,12 +598,12 @@ https://jsfiddle.net/mweststrate/zhea3d1z/
 
 # Observables as component state
 
-![setstate](img/setstate.png)
-
 * Optional, but used by many MobXites
 * Better optimized and simpler to use than setState
 * Easy refactoring into stores
 * [Blog: 3 reasons why I stopped using setState](https://medium.com/@mweststrate/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e#.pcvfrim32)
+
+![setstate](img/setstate.png)
 
 ---
 
@@ -603,10 +638,10 @@ https://jsfiddle.net/mweststrate/zhea3d1z/
     this.requestCount++
     window.fetch("https://randomuser.me/api/?results=3")
         .then(r => r.json())
-        .then(data => {
-            this.users.splice(0, 0, ...data.results)
+        .then(action(data => {
+            this.users.push(...data.results)
             this.requestCount--
-        })
+        }))
 }
 ```
 ---
@@ -624,7 +659,7 @@ https://jsfiddle.net/mweststrate/a8az1nnj/3/
 
 @action.bound requestUsers() {
     this.users = fromPromise(
-        window.fetch("randomuser.me")
+        window.fetch("https://randomuser.me/api/?results=3")
         .then(r => r.json())
         .then(data => data.results)
     )
@@ -648,16 +683,18 @@ class observablePromise<T> {
 # Async: fromPromise
 
 ```javascript
-{ this.users.case({
-    "pending":   () => "loading",
-    "rejected":  (e) => "error: " + e,
-    "fulfilled": (users) => users.map(user =>
-        <div key={user.login.username}>
-            <img src={user.picture.thumbnail} />
-            {user.email}
-        </div>
-    )
-}) }
+<div>
+    { this.users.case({
+        "pending":   () => "loading",
+        "rejected":  (e) => "error: " + e,
+        "fulfilled": (users) => users.map(user =>
+            <div key={user.login.username}>
+                <img src={user.picture.thumbnail} />
+                {user.email}
+            </div>
+        )
+    }) }
+</div>
 ```
 
 ---
@@ -806,6 +843,10 @@ class RootStore {
 
 ```javascript
 class User {
+    constructor(userStore) {
+        this.store = userStore
+    }
+
     @computed get todos() {
         return this.store.rootStore.todoStore.todos.filter(
             todo => todo.assignee === this
@@ -815,7 +856,7 @@ class User {
 ```
 ---
 
-## Test usage
+# Test usage
 
 ```javascript
 test("It should test something, t => {
@@ -832,7 +873,7 @@ test("It should test something, t => {
 
 ---
 
-## Client usage
+# Client usage
 
 ```javascript
 const rootStore = new RootStore(window.fetch)
@@ -1083,7 +1124,7 @@ export function startRouter(store) {
 
 ---
 
-1. Super simple to write
+1 - Super simple to write
 
 _Focus on what you want to achieve. Ignore how it should affect your application. It will be derived._
 
@@ -1095,29 +1136,36 @@ _Focus on what you want to achieve. Ignore how it should affect your application
 
 ---
 
-2. Eliminates bugs related to cascading updates
+2 - Eliminates bugs related to cascading updates
 
 _If the family name changes, don't forget to update spouse name..._
 
 ---
 
-3. Eliminates bugs related to staleness
+3 - Eliminates bugs related to staleness
 
 _If the spouce name changes, should be reflected on screen..._
 
 ---
 
-4. Fine grained updates perform much better then event based updates
+4 - Fine grained updates perform much better then event based updates
 
 _Don't notify components rendering persons, only those which will be affected by this change..._
 
+.appear[
+![fast](img/fast.png)
+]
+
 ---
 
-![fast](img/fast.png)
+## TL;DL
 
-.appear[
-# Q & A time!
-]
+* .appear[Pay taxes]
+* .appear[Apply MobX patterns]
+* .appear[Enjoy your spouse]
+
+.appear[# Q & A time!]
+
 ---
 
 Demo: https://jsfiddle.net/mweststrate/wv3yopo0/
@@ -1150,6 +1198,9 @@ Demo: WebModeler
 * .appear[Unopionated vs. opionated]
 * .appear[Keep an eye on `mobx-state-tree` & React-Europe!]
 
+--
+
+## More questions?
 		</textarea>
 		<script>require=(function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({"components/printing":[function(require,module,exports){
 module.exports=require('yoGRCZ');

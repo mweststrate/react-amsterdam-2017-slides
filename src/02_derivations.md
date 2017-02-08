@@ -117,9 +117,18 @@ function setHusband(wife, husband) {
 
 # Marriage, what could possibly go wrong?
 
+.appear[
+```javascript
+function setHusband(wife, husband) {
+    wife.husband = husband
+    wife.lastName = husband ? husband.lastName : wife.familyName
+}
+```
+]
+
+* .appear[Getting broke]
 * .appear[Fights]
 * .appear[Divorce]
-* .appear[Getting broke]
 * .appear[Husband changes last name]
 
 ---
@@ -190,16 +199,12 @@ Makes sure .box1[data] is always, automatically and efficiently reflected in .bo
 
 * Box 1: .box1[`@observable`]
 * Box 2: .box2[`@computed`]
-* Box 3: .box3[`observer`, `autorun`, `reaction`, `when`]
+* Box 3: .box3[`autorun` (`observer`, `reaction`, `when`)]
 * Box 4: .box4[`@action`]
 
 ---
 
 Note, using decorators is optional!
-
----
-
-[Demo](http://jsbin.com/lusoqe/1/edit?js,console)
 
 ---
 
@@ -228,13 +233,17 @@ const michel = observable({
 const {observable, reaction, autorun} = mobx;
 
 autorun(() => {
-  console.log(elise.husband === michel ? "Michel happy" : "michel crying")
+  console.log(elise.husband === michel ? "Michel happy" : "Michel crying")
 })
 
 autorun(() => {
   console.log(elise.fullName)
 })
 ```
+
+---
+
+[Demo](http://jsbin.com/lusoqe/1/edit?js,console)
 
 ---
 
@@ -275,11 +284,31 @@ class Todo {
 ```javascript
 class TodoStore {
     @observable todos: Todo[]
+    @computed get selectedTodos() {
+        return this.tods.filter(t => t.selected)
+    }
+}
+
+class Todo {
+    @observable title: string
+    @observable selected: boolean
+}
+```
+
+---
+
+# Exercise: Multi selection
+
+```javascript
+class TodoStore {
+    @observable todos: Todo[]
     @observable selectedTodos: Todo[]
 }
 
 class Todo {
     @observable title: string
-    @computed selected: boolean
+    @computed get selected() {
+        return this.todoStore.selectedTodos.indexOf(this) !== -1
+    }
 }
 ```

@@ -18,10 +18,10 @@
     this.requestCount++
     window.fetch("https://randomuser.me/api/?results=3")
         .then(r => r.json())
-        .then(data => {
-            this.users.splice(0, 0, ...data.results)
+        .then(action(data => {
+            this.users.push(...data.results)
             this.requestCount--
-        })
+        }))
 }
 ```
 ---
@@ -39,7 +39,7 @@ https://jsfiddle.net/mweststrate/a8az1nnj/3/
 
 @action.bound requestUsers() {
     this.users = fromPromise(
-        window.fetch("randomuser.me")
+        window.fetch("https://randomuser.me/api/?results=3")
         .then(r => r.json())
         .then(data => data.results)
     )
@@ -63,16 +63,18 @@ class observablePromise<T> {
 # Async: fromPromise
 
 ```javascript
-{ this.users.case({
-    "pending":   () => "loading",
-    "rejected":  (e) => "error: " + e,
-    "fulfilled": (users) => users.map(user =>
-        <div key={user.login.username}>
-            <img src={user.picture.thumbnail} />
-            {user.email}
-        </div>
-    )
-}) }
+<div>
+    { this.users.case({
+        "pending":   () => "loading",
+        "rejected":  (e) => "error: " + e,
+        "fulfilled": (users) => users.map(user =>
+            <div key={user.login.username}>
+                <img src={user.picture.thumbnail} />
+                {user.email}
+            </div>
+        )
+    }) }
+</div>
 ```
 
 ---

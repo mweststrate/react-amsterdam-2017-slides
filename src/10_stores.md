@@ -134,6 +134,10 @@ class RootStore {
 
 ```javascript
 class User {
+    constructor(userStore) {
+        this.store = userStore
+    }
+
     @computed get todos() {
         return this.store.rootStore.todoStore.todos.filter(
             todo => todo.assignee === this
@@ -143,7 +147,7 @@ class User {
 ```
 ---
 
-## Test usage
+# Test usage
 
 ```javascript
 test("It should test something, t => {
@@ -160,7 +164,7 @@ test("It should test something, t => {
 
 ---
 
-## Client usage
+# Client usage
 
 ```javascript
 const rootStore = new RootStore(window.fetch)

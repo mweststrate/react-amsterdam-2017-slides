@@ -6,7 +6,7 @@
 
 ---
 
-1. Super simple to write
+1 - Super simple to write
 
 _Focus on what you want to achieve. Ignore how it should affect your application. It will be derived._
 
@@ -18,29 +18,36 @@ _Focus on what you want to achieve. Ignore how it should affect your application
 
 ---
 
-2. Eliminates bugs related to cascading updates
+2 - Eliminates bugs related to cascading updates
 
 _If the family name changes, don't forget to update spouse name..._
 
 ---
 
-3. Eliminates bugs related to staleness
+3 - Eliminates bugs related to staleness
 
 _If the spouce name changes, should be reflected on screen..._
 
 ---
 
-4. Fine grained updates perform much better then event based updates
+4 - Fine grained updates perform much better then event based updates
 
 _Don't notify components rendering persons, only those which will be affected by this change..._
 
+.appear[
+![fast](img/fast.png)
+]
+
 ---
 
-![fast](img/fast.png)
+## TL;DL
 
-.appear[
-# Q & A time!
-]
+* .appear[Pay taxes]
+* .appear[Apply MobX patterns]
+* .appear[Enjoy your spouse]
+
+.appear[# Q & A time!]
+
 ---
 
 Demo: https://jsfiddle.net/mweststrate/wv3yopo0/
@@ -72,3 +79,7 @@ Demo: WebModeler
 * .appear[Fine grained updates (fast) vs. coarse grained (snapshots, immutability)]
 * .appear[Unopionated vs. opionated]
 * .appear[Keep an eye on `mobx-state-tree` & React-Europe!]
+
+--
+
+## More questions?

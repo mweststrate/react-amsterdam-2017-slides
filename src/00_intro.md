@@ -5,7 +5,13 @@
 Michel Weststrate - Mendix - @mweststrate
 <br/><br/>
 
-<img src="img/mendix-logo.png" height="80px" />
+<img src="img/mendix-logo.png" height="80px" /><br/>
+<small>(Nr 1. best tech employer in NL according to Glassdoor.com)</small>
+
+---
+
+[http://mobx-patterns.surge.sh](http://mobx-patterns.surge.sh)
+
 ---
 
 # Contents
@@ -13,8 +19,8 @@ Michel Weststrate - Mendix - @mweststrate
 1. Thinking in derivations
 2. MobX basics
 4. Recipes
-3. How is MobX different?
 5. Q & A
+3. How is MobX different?
 
 
 ---
