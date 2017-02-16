@@ -7,5 +7,4 @@
 * Update name / author / price in `books.json`
 * Add / remove books
 * Handle updated / removed books in cart
-* Use [serializr](https://github.com/mobxjs/serializr)?
-* Solution: [local storage](https://github.com/mweststrate/react-mobx-shop/compare/4_routing...5_localstorage), [server updates](https://github.com/mweststrate/react-mobx-shop/compare/5_localstorage...6_serversync)
+* Solution: [local storage](https://github.com/mweststrate/react-mobx-shop/compare/3_inject...4_localstorage), [server updates](https://github.com/mweststrate/react-mobx-shop/compare/4_localstorage...5_serversync)

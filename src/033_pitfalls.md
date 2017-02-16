@@ -9,7 +9,7 @@
 * .appear[Use `observable.map` for dynamic keyed stuff]
 * .appear[`slice()` observable arrays before passing to external tools]
 * .appear[`computed` values are suspended if not in use]
-* .appear[Updating values in reaction; use `computed` instead!]
+* .appear[Updating values in reaction? use `computed` instead!]
 * .appear[use _modifiers_ to disable auto conversion]
 
 ---

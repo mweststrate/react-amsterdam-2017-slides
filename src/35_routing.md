@@ -97,7 +97,7 @@ const App = observer(({viewStore}) => {
 
 ---
 
-# Rendering app to history
+# Rendering app to URL
 
 ```javascript
 @computed get currentPath() {

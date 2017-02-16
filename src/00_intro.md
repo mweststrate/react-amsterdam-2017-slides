@@ -12,28 +12,21 @@ Michel Weststrate - Mendix - @mweststrate
 
 ---
 
-<table><tr><td>
+```
+09:15 - The idea behind MobX and how it works
+10:15 - Exercise 1
+11:15 - Break. Stores & Forms
+11:45 - Exercise 2
+12:30 - Lunch
+13:30 - Serialization & Combining stores
+14:00 - Exercise 3
+15:00 - Break. Routing
+15:30 - Exercise 4
+16:15 - Browserless app flow testing
+16:30 - Q & A
+```
 
-.x[
-1. Thinking in derivations
-2. How MobX works
-4. MobX + react
-4. Async processes
-5. Exercise 1
-]
+---
 
-</td><td>
-
-.x[
-6. Combining stores & testing
-5. Form validations
-1. Provider / inject
-1. Exercise 2
-1. Break
-6. Serialization
-8. Handling updates
-7. Routing
-9. Super store & app flow testing
-]
-
-</td></tr></table>
+1. Slides URL
+2. First run - so write down feedback! `#ktnxbye`

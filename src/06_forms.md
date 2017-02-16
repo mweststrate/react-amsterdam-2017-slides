@@ -1,10 +1,10 @@
-# Forms
+## Forms
 
-https://jsfiddle.net/mweststrate/zhea3d1z/
+[Demo](https://jsfiddle.net/mweststrate/zhea3d1z/)
 
 ---
 
-# Observables as component state
+## Observables as component state
 
 * Optional, but used by many MobXites
 * Better optimized and simpler to use than setState
@@ -15,7 +15,7 @@ https://jsfiddle.net/mweststrate/zhea3d1z/
 
 ---
 
-# Libraries
+## Libraries
 
 * [mobx-react-form](https://github.com/foxhound87/mobx-react-form)
 * [formstate](https://github.com/formstate/formstate)

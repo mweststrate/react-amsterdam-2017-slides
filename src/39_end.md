@@ -1,5 +1,5 @@
 # Q & A
 
-Feedback
+Feedback needed! mweststrate@gmail.com
 
-Egghead course
+[Egghead course](https://egghead.io/courses/mobx-fundamentals)

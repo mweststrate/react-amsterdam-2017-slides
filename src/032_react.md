@@ -1,9 +1,9 @@
 
 # MobX & React
 
-* `observer` from `mobx-react` package
-* roughly: `autorun(() => this.render())`
-* plus: `PureRenderMixin` as `shouldComponentUpdate`!
+* .appear[`observer` from `mobx-react` package]
+* .appear[roughly: `autorun(() => this.render())`]
+* .appear[plus: `PureRenderMixin` as `shouldComponentUpdate`!]
 * .appear[Changes inside objects will be observed by MobX]
 * .appear[React only needs to act on new props]
 

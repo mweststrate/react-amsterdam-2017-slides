@@ -2,7 +2,7 @@
 # Provider / inject
 
 * Provider / inject: Inject stores in components
-* Uses context, but: doesn't break shouldComponentUpdate
+* Uses context, but: doesn't break `shouldComponentUpdate`
 * mobx-react package
 * [Blog: How to safely use React context](https://medium.com/@mweststrate/how-to-safely-use-react-context-b7e343eff076#.1y806u7cy)
 

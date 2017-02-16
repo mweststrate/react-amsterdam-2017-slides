@@ -22,29 +22,29 @@ _Focus on what you want to achieve. Ignore how it should affect your application
 
 _If you change one fact, you don't have to think what other facts need to be updated and what side effects should be triggered_
 
-https://www.youtube.com/watch?v=Aws40KOx90U
+[Real world MobX talk](https://www.youtube.com/watch?v=Aws40KOx90U)
 
 ---
 
-2 - Eliminates bugs related to cascading updates
+3 - Eliminates bugs related to cascading updates
 
 _If the family name changes, don't forget to update spouse name..._
 
 ---
 
-3 - Eliminates bugs related to staleness
+4 - Eliminates bugs related to staleness
 
 _If the name of the spouse changes, should be reflected on screen..._
 
 ---
 
-4 - Easy interoperability & freedom of architecture
+5 - Easy interoperability & freedom of architecture
 
 _(Also a down-side)_
 
 ---
 
-4 - Fine grained updates perform much better then event based updates
+6 - Fine grained updates perform much better then event based updates
 
 _Don't notify all components rendering persons, only those which will be affected by this change..._
 
@@ -54,7 +54,7 @@ _Don't notify all components rendering persons, only those which will be affecte
 
 ---
 
-5 - Optimal tracking is only feasible if tracking is transparent
+7 - Optimal tracking is only feasible if tracking is transparent
 
 ```javascript
 @computed get fullName() {
@@ -75,4 +75,4 @@ husband.lastName                             familyName
 
 ---
 
-## Break
+## Questions?

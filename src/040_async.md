@@ -28,7 +28,7 @@
 
 # Async stuff
 
-https://jsfiddle.net/mweststrate/a8az1nnj/3/
+[Demo](https://jsfiddle.net/mweststrate/a8az1nnj/3/)
 
 ---
 
@@ -40,8 +40,8 @@ https://jsfiddle.net/mweststrate/a8az1nnj/3/
 @action.bound requestUsers() {
     this.users = fromPromise(
         window.fetch("https://randomuser.me/api/?results=3")
-        .then(r => r.json())
-        .then(data => data.results)
+            .then(r => r.json())
+            .then(data => data.results)
     )
 }
 ```
@@ -82,4 +82,4 @@ class observablePromise<T> {
 # Async: fromPromise
 
 * Part of `mobxUtils` package
-* https://jsfiddle.net/mweststrate/3LvnpLpg/
+* [Demo](https://jsfiddle.net/mweststrate/3LvnpLpg/)

@@ -20,9 +20,9 @@ undefined
 # Some background:
 
 * Most JavaScript concepts are immutable
-* Exception: Collections (object, array) and variables
-* Need to box primitives to be able to "modify" primitive variables, or to "pass by reference"
-* So, only objects, arrays and variables can hold state!
+* .appear[Exception: Collections (object, array) and variables]
+* .appear[So, only objects, arrays and variables can hold state!]
+* .appear[Need to box primitives to be able to "modify" primitive variables, or "pass by reference"]
 
 ---
 
@@ -121,16 +121,6 @@ extendObservable(target, propName, initialValue) {
 
 # Autorun
 
-* Takes a function without arguments
-* Determines which observables it depends on
-* Re-runs when any of them changes
-* Bridges from reactivity to the imperative side effecty world
-* Network requests, flushing DOM, logging..
-
----
-
-# Autorun
-
 ```javascript
 const temperature = observable.box(37)
 
@@ -144,6 +134,17 @@ temperature.set(21)
 ```
 
 ---
+
+# Autorun
+
+* Takes a function without arguments
+* Determines which observables it depends on
+* Re-runs when any of them changes
+* Bridges from reactivity to the imperative side effecty world
+* Network requests, flushing DOM, logging..
+
+---
+
 
 ## How does autorun work?
 
@@ -187,18 +188,20 @@ class Box {
 }
 ```
 
+---
+
 In more detail [YouTube: Magic MobX](https://www.youtube.com/watch?v=TfxfRkNCnmk)
 
 ---
 
 # Computed values
 
-* .appear[Like `autorun`, but; produce value using pure function]
+* .appear[Like `autorun`, but; produce value instead of side-effect. Using pure function]
 * .appear[Can have observers like boxes]
 * .appear[Will suspend if nobody is observing it's values (auto GC)]
 * .appear[If suspended, can still compute on demand if needed]
 * .appear[Just a caching point, if left out, behavior of app is the same]
-* .appear[Can't be used enough]
+* .appear[Can't be used too much]
 
 ---
 
@@ -221,8 +224,8 @@ console.log(elise.fullName)
 
 # Actions
 
-* Wrap functions that modify state in them
-* Batch changes, reactions will only run if outer-most action complete
+* Mark functions that modify state as actions
+* Batch changes, reactions will only run if outer-most action completes
 * Computed values will be consistent inside actions
 * use `action.bound` as autobind
 * use `mobx.strictMode(true)` to forbid changing observables outside actions

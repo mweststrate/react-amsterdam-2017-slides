@@ -1,10 +1,24 @@
+# State
+
+1. Domain state
+2. View state (volatile, shared)
+3. Local component state (volatile)
+
+.appear[MobX treats them all the same]
+
+---
+
 # Domain State
 
 * "What your app is about"
-* Unlike component state which is volatile
 * Should be reusable, distributable and testable
 * Should not be owned by UI
 * Should not be affected by UI
+
+---
+
+# Domain State
+
 * Stores: responsible for a _subdomain_ in the app: users, todos, view
 * Models: data model + actions for a _concept_ in the app: user, address, todo
 
@@ -112,4 +126,6 @@ JSON is just another representation of the state.
 * Class methods &larr;&rarr; Dispatching Actions (Flux)
 * Tip: [serializr](https://github.com/mobxjs/serializr)
 * Tip: [mobx-state-tree](https://github.com/mobxjs/mobx-state-tree)
+
+.appear[Quiz: benefits of either approach]
 

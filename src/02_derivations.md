@@ -90,7 +90,7 @@ TL;DR: Put money in the wrong box, and all your monies are belong to us.
 
 ---
 
-# Exercise: Marriage
+# Quiz: Marriage
 
 ```javascript
 const elise = {
@@ -103,7 +103,7 @@ const elise = {
 
 ---
 
-# Exercise: Marriage
+# Quiz: Marriage
 
 ```javascript
 function setHusband(wife, husband) {
@@ -141,7 +141,7 @@ How to fix marriage:
 
 ---
 
-# Exercise: Marriage
+# Quiz: Marriage
 
 ```javascript
 const elise = {
@@ -157,13 +157,13 @@ const elise = {
 
 ---
 
-# Exercise: Marriage
+# Quiz: Marriage
 
-* .appear[.box1[familyName]]
-* .appear[.box1[husband]]
-* .appear[.box3[lastName]]
-* .appear[.box2[assigning new husband]]
-* .appear[.box4[/me going to cry in corner]]
+* .appear[familyName] .appear[.box1[state]]
+* .appear[husband] .appear[.box1[state]]
+* .appear[lastName] .appear[.box3[derived value]]
+* .appear[assigning new husband] .appear[.box2[action]]
+* .appear[/me crying in corner] .appear[.box4[reaction]]
 
 ---
 
@@ -242,7 +242,7 @@ autorun(() => {
 
 ---
 
-# Exercise: Multi selection
+# Quiz: Multi selection
 
 ```javascript
 class TodoStore {
@@ -258,7 +258,7 @@ class Todo {
 
 ---
 
-# Exercise: Multi selection
+# Quiz: Multi selection
 
 ```javascript
 class TodoStore {
@@ -274,7 +274,7 @@ class Todo {
 
 ---
 
-# Exercise: Multi selection
+# Quiz: Multi selection
 
 ```javascript
 class TodoStore {
@@ -292,7 +292,7 @@ class Todo {
 
 ---
 
-# Exercise: Multi selection
+# Quiz: Multi selection
 
 ```javascript
 class TodoStore {
