@@ -16,13 +16,6 @@ Transparent Reactive Programming Library
 
 ---
 
-MobX:
-
-1. Find minimal state that expresses the state of your app
-2. Derive all other things from the minimal state
-3. MobX keeps derivations in sync using runtime analysis
-
----
 
 Advantages
 

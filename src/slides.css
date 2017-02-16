@@ -44,7 +44,8 @@ small {
 
 a, :visited {
     text-decoration: none;
-    color: #1780b9;
+    font-style: italic;
+    color: orangered;
 }
 
 hr {
@@ -99,6 +100,11 @@ ul, ol {
 
 .remark-slide-content pre  code.remark-code {
     padding: 0.5em 8em;
+}
+
+.remark-inline-code {
+    font-size: 0.9em;
+    color: orangered;
 }
 
 .remark-slide-content .appeared pre code,
@@ -199,16 +205,16 @@ div.lighten {
     height: 150px;
 }
 
-.box1 {
+.box1, .box1 code {
     color: #1780b9;
 }
-.box2 {
+.box3, .box3 code {
     color: #76ca02;
 }
-.box3 {
+.box4, .box4 code {
     color: orangered;
 }
-.box4 {
+.box2, .box2 code {
     color: #f99b1d;
 }
 

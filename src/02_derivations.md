@@ -1,18 +1,13 @@
-## 1. Thinking in derivations
+# MobX
+
+Simple & Scalabe State Management
+
+Transparent Reactive Programming Library
 
 ---
 
-# Most complex things in programming?
 
-1. .appear[Caching]
-2. .appear[Naming things]
-
----
-
-# Solving complex problems with MobX
-
-2. .appear[The Dutch Tax System]
-1. .appear[Marriage]
+## Thinking in derivations
 
 ---
 
@@ -42,19 +37,23 @@ TL;DR: Put money in the wrong box, and all your monies are belong to us.
 
 <table width="100%">
     <tr>
+        <td>Input</td>
+        <td>State</td>
+        <td>Output</td>
+    <tr>
         <td rowspan="2" class="box-actions">
-            <div class="appear">Box 4: Modify data</appear>
+            <div class="appear">Box 2: Modify data</appear>
         </td>
         <td rowspan="2" class="box-state">
             <div>Box 1: The data your app is about</div>
         </td>
         <td class="box-computed">
-            <div class="appear">Box 2: Data that could be computed from other data</appear>
+            <div class="appear">Box 3: Data that could be computed from other data</appear>
         </td>
     </tr>
     <tr>
         <td class="box-reactions">
-            <div class="appear">Box 3: Freaking side effects</appear>
+            <div class="appear">Box 4: Effects that should happen on state changes</appear>
         </td>
     </tr>
 </table>
@@ -73,18 +72,18 @@ TL;DR: Put money in the wrong box, and all your monies are belong to us.
 <table width="100%">
     <tr>
         <td rowspan="2" class="box-actions">
-            <div class="appear">Box 4: Users enters data</appear>
+            <div class="appear">Users enters data</appear>
         </td>
         <td rowspan="2" class="box-state">
-            <div>Box 1: Data Cells</div>
+            <div>Data Cells</div>
         </td>
         <td class="box-computed">
-            <div class="appear">Box 2: Formulas</appear>
+            <div class="appear">Formulas</appear>
         </td>
     </tr>
     <tr>
         <td class="box-reactions">
-            <div class="appear">Box 3: Draw on screen</appear>
+            <div class="appear">Draw on screen</appear>
         </td>
     </tr>
 </table>
@@ -162,33 +161,33 @@ const elise = {
 
 * .appear[.box1[familyName]]
 * .appear[.box1[husband]]
-* .appear[.box2[lastName]]
-* .appear[.box4[assigning new husband]]
-* .appear[.box3[/me going to cry in corner]]
+* .appear[.box3[lastName]]
+* .appear[.box2[assigning new husband]]
+* .appear[.box4[/me going to cry in corner]]
 
 ---
 
 # MobX
 
-Makes sure .box1[data] is always, automatically and efficiently reflected in .box2[derived values] and that necessary .box3[side effects] are fired.
+Makes sure .box1[data] is always, automatically and efficiently reflected in .box3[derived values] and that necessary .box4[side effects] are fired.
 
 ---
 
 <table width="100%">
     <tr>
         <td rowspan="2" class="box-actions">
-            <div class="appear">Box 4: Actions</appear>
+            <div class="appear">Box 2: Actions</appear>
         </td>
         <td rowspan="2" class="box-state">
             <div>Box 1: Observable values</div>
         </td>
         <td class="box-computed">
-            <div class="appear">Box 2: Computed values</appear>
+            <div class="appear">Box 3: Computed values</appear>
         </td>
     </tr>
     <tr>
         <td class="box-reactions">
-            <div class="appear">Box 3: Reactions</appear>
+            <div class="appear">Box 4: Reactions</appear>
         </td>
     </tr>
 </table>
@@ -198,13 +197,9 @@ Makes sure .box1[data] is always, automatically and efficiently reflected in .bo
 # MobX api:
 
 * Box 1: .box1[`@observable`]
-* Box 2: .box2[`@computed`]
-* Box 3: .box3[`autorun` (`observer`, `reaction`, `when`)]
-* Box 4: .box4[`@action`]
-
----
-
-Note, using decorators is optional!
+* Box 2: .box2[`@action`]
+* Box 3: .box3[`@computed`]
+* Box 4:  .box4[`autorun`, `observer`, `reaction`, `when`]
 
 ---
 
