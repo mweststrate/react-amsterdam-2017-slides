@@ -263,7 +263,7 @@ Michel Weststrate - Mendix - @mweststrate
 
 ---
 
-1. [slides](mobx-workshop-2017-02-17.surge.sh)
+1. [mobx-workshop-2017-02-17.surge.sh](mobx-workshop-2017-02-17.surge.sh)
 1. [bookshop](http://book-shop-2017-02-17.surge.sh/)
 1. [source](https://github.com/mweststrate/react-mobx-shop)
 2. First run - so write down feedback! `#ktnxbye`
@@ -786,6 +786,39 @@ extendObservable(target, propName, initialValue) {
 
 ---
 
+# Observable
+
+.appear[
+```javascript
+observable.box(value)
+extendObservable(target, { prop: value })
+```
+]
+
+.appear[
+```javascript
+class Class {
+    @observable prop = value
+}
+```
+]
+
+.appear[
+```javascript
+observable.object({ prop: value })
+observable.array([value])
+observable.map(values)
+```
+]
+
+.appear[
+```javascript
+observable(value)
+```
+]
+
+---
+
 # Autorun
 
 ```javascript
@@ -1075,11 +1108,43 @@ class Box {
 
 ## Modifiers
 
-* default `deep`: recursively convert & clone new values
+* default `deep`: recursively convert & clone plain, complex values
 * `ref`: never convert values
 * `shallow`: convert maps, arrays, objects. Don't recurse into values
 * Use `ref` / `shallow`  to store objects not managed by your code
+* Class instances are never converted &rarr; responsiblity of constructor
 
+---
+
+## Modifiers
+
+```javascript
+class Class {
+    @observable.ref prop = complex value
+}
+```
+
+---
+
+## Non decorator syntax overview
+
+```javascript
+extendObservable(object, {
+    prop1: value
+
+    prop2: observable.ref(value),
+    action1: action(function(v) {
+        this.prop1 = v
+    }),
+
+    get computed1() {
+        return this.prop1
+    }
+    set computed1(v) {
+        this.prop1 = v
+    }
+})
+```
 ---
 <!-- 040_async.md-->
 
@@ -1170,7 +1235,41 @@ class observablePromise<T> {
 * [Demo](https://jsfiddle.net/mweststrate/3LvnpLpg/)
 
 ---
-<!-- 042_stores.md-->
+<!-- 050_exercise1.md-->
+
+## The book shop exercise
+
+* Demo
+* Create-react-app based
+* [custom react scripts](https://github.com/kitze/custom-react-scripts) or [rewired](https://github.com/timarney/react-app-rewired/tree/master/packages/react-app-rewire-mobx) for decorators
+* HTML Mockup in [0_base branch](https://github.com/mweststrate/react-mobx-shop/tree/0_base)
+* Running reference implementation: http://book-shop-2017-02-17.surge.sh/
+* Tip: https://mobx.js.org/ !
+
+---
+
+## Exercise 1: Fetch data, test, render
+
+* Design data model / book store in `stores/` folder
+* Fetch books from `public/books.json`
+* Render data from the store (sorted)
+* Design questions: classes? references? decorators?
+* Verify with UI-unaware tests
+* Render loading state
+* [Solution](https://github.com/mweststrate/react-mobx-shop/compare/0_base...1_fetch)
+
+---
+
+```
+git clone git@github.com:mweststrate/react-mobx-shop.git
+git checkout 0_base
+yarn install
+yarn start
+```
+
+Discuss exercise 1
+---
+<!-- 052_stores.md-->
 
 # State
 
@@ -1304,33 +1403,6 @@ JSON is just another representation of the state.
 .appear[Quiz: benefits of either approach]
 
 
----
-<!-- 05_exercise1.md-->
-
-## The book shop exercise
-
-* Demo
-* Create-react-app based
-* [custom react scripts](https://github.com/kitze/custom-react-scripts) or [rewired](https://github.com/timarney/react-app-rewired/tree/master/packages/react-app-rewire-mobx) for decorators
-* HTML Mockup in [0_base branch](https://github.com/mweststrate/react-mobx-shop/tree/0_base)
-* Running reference implementation: http://book-shop-2017-02-17.surge.sh/
-* Tip: https://mobx.js.org/ !
-
----
-
-## Exercise 1: Fetch data, test, render
-
-* Design data model & stores in `stores/` folder
-* Fetch books from `public/books.json`
-* Render data from the store (sorted)
-* Design questions: classes? references? decorators?
-* Verify with UI-unaware tests
-* Render loading state
-* [Solution](https://github.com/mweststrate/react-mobx-shop/compare/0_base...1_fetch)
-
----
-
-Discuss exercise 1
 ---
 <!-- 06_forms.md-->
 
@@ -1587,6 +1659,27 @@ console.log(serialize(message))
 * Solution: [local storage](https://github.com/mweststrate/react-mobx-shop/compare/3_inject...4_localstorage), [server updates](https://github.com/mweststrate/react-mobx-shop/compare/4_localstorage...5_serversync)
 
 ---
+
+Discuss exercise 3
+
+---
+
+# Alternative: normalize-behind-the-scenes
+
+```javascript
+class BookEntry {
+    private bookId: string
+
+    @computed get book() {
+        return this.shop.books.get(this.bookId)
+    }
+    set book(book) {
+        this.bookId = book.id
+    }
+}
+```
+
+---
 <!-- 35_routing.md-->
 
 
@@ -1617,6 +1710,13 @@ const User = React.createClass({
 * 'Smart' components parse routes and fetch data
 * Breaks view = f(state)
 * Hard to test application flow without testing components
+
+---
+
+_Placing async effects also often happens in some component’s componentDidMount, which is an ad-hoc solution, since components are often meant only for view concerns (markup).
+It often feels incorrect to mix these concerns since Redux and its async solutions are meant to separate them from markup._
+
+André Staltz in Some Problems with React/Redux
 
 ---
 

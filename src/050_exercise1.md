@@ -11,7 +11,7 @@
 
 ## Exercise 1: Fetch data, test, render
 
-* Design data model & stores in `stores/` folder
+* Design data model / book store in `stores/` folder
 * Fetch books from `public/books.json`
 * Render data from the store (sorted)
 * Design questions: classes? references? decorators?
@@ -20,5 +20,12 @@
 * [Solution](https://github.com/mweststrate/react-mobx-shop/compare/0_base...1_fetch)
 
 ---
+
+```
+git clone git@github.com:mweststrate/react-mobx-shop.git
+git checkout 0_base
+yarn install
+yarn start
+```
 
 Discuss exercise 1

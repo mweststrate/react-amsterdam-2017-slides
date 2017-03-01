@@ -29,6 +29,13 @@ const User = React.createClass({
 
 ---
 
+_Placing async effects also often happens in some component’s componentDidMount, which is an ad-hoc solution, since components are often meant only for view concerns (markup).
+It often feels incorrect to mix these concerns since Redux and its async solutions are meant to separate them from markup._
+
+André Staltz in Some Problems with React/Redux
+
+---
+
 # Ideal situation
 
 ![img/routing2.png](img/routing2.png)

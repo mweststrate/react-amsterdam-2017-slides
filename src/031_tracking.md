@@ -119,6 +119,39 @@ extendObservable(target, propName, initialValue) {
 
 ---
 
+# Observable
+
+.appear[
+```javascript
+observable.box(value)
+extendObservable(target, { prop: value })
+```
+]
+
+.appear[
+```javascript
+class Class {
+    @observable prop = value
+}
+```
+]
+
+.appear[
+```javascript
+observable.object({ prop: value })
+observable.array([value])
+observable.map(values)
+```
+]
+
+.appear[
+```javascript
+observable(value)
+```
+]
+
+---
+
 # Autorun
 
 ```javascript

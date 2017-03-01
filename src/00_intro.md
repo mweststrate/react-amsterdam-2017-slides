@@ -28,7 +28,7 @@ Michel Weststrate - Mendix - @mweststrate
 
 ---
 
-1. [slides](mobx-workshop-2017-02-17.surge.sh)
+1. [mobx-workshop-2017-02-17.surge.sh](mobx-workshop-2017-02-17.surge.sh)
 1. [bookshop](http://book-shop-2017-02-17.surge.sh/)
 1. [source](https://github.com/mweststrate/react-mobx-shop)
 2. First run - so write down feedback! `#ktnxbye`

@@ -49,7 +49,40 @@ class Box {
 
 ## Modifiers
 
-* default `deep`: recursively convert & clone new values
+* default `deep`: recursively convert & clone plain, complex values
 * `ref`: never convert values
 * `shallow`: convert maps, arrays, objects. Don't recurse into values
 * Use `ref` / `shallow`  to store objects not managed by your code
+* Class instances are never converted &rarr; responsiblity of constructor
+
+---
+
+## Modifiers
+
+```javascript
+class Class {
+    @observable.ref prop = complex value
+}
+```
+
+---
+
+## Non decorator syntax overview
+
+```javascript
+extendObservable(object, {
+    prop1: value
+
+    prop2: observable.ref(value),
+    action1: action(function(v) {
+        this.prop1 = v
+    }),
+
+    get computed1() {
+        return this.prop1
+    }
+    set computed1(v) {
+        this.prop1 = v
+    }
+})
+```
