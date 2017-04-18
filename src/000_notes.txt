@@ -1,0 +1,136 @@
+<img src="img/mobx2.png" height="80px" />
+
+## Complexity: Divide and Conquer!
+
+React.Amsterdam Conf 2017
+
+Michel Weststrate - Mendix - @mweststrate
+<br/><br/>
+
+<img src="img/mendix-logo.png" height="80px" /><br/>
+.appear[
+    <small>(Nr 1. best tech employer in NL according to Glassdoor.com)</small>
+]
+
+----
+
+## Complexity: Divide and Conquer!
+
+---
+
+The MobX philosophy
+
+App consistens 4 Boxes
+
+- State (minimally defined)
+- Actions (user events, incoming WS, etc, basically all callbacks
+- Things that need to react to state:
+  - values that need to reflect changes
+  - side effects that need to reflect changes
+- Mobx makes sure right happens automatically
+
+---
+
+Minimal state example
+
+Filtering todos: imperatively
+- toggle
+- remove
+- add
+- batch remove, batch add?
+
+Make computed property
+- signal all users
+  - who are the users?
+  - over / under subs
+  - subscription management
+
+Filtering todos: declaratively & reactively
+- define the relation
+
+This is a simple example, but as shown in my ReactNext talk, this number raises lineary to exponantially to the number of features you have!
+
+---
+
+4 boxes
+
+observable / computed / reaction
+
+---
+
+```
+view = f(state)
+```
+* state in components -> react
+* state outside components -> mobx ( For shared / outside component state needs state management lib)
+* any future state -> mobx (MobX: only think about the initial derivation, the rest is up to MobX)
+
+---
+
+
+Code: some render compnents +
+Code: store
+
+Demo: bookshop,
+modify some data
+
+---
+
+Next level
+
+viewX = fX state
+
+---
+
+If the view is just a derived value. Does our app still work without view?
+
+---
+
+* Does our app still function?
+  - Is our data still loaded?
+  - Can we still 'click' a book to navigate to a next page?
+  - Can we still check our inputs?
+* Can we run our app without browser (simulator)?
+* Can all our components be (practdically) stateless?
+* Goal: headless testing
+* Goal: reuse across technology stacks
+
+---
+Can we build an app entirely out of stateless function components?
+
+---
+
+Yes we can!
+
+---
+
+
+live Kill `React.render()`
+
+
+
+
+---
+
+Components need data
+  - Pass in props
+  - Initiate data fetch.
+  - state = f(view) ?!
+  - componentWillReceiveProps?
+  - How do I otherwise know when to start data fetching?
+  _ Well, you know when to render that component. The cause for that should also cause the data fetching
+  - In other words. Data fetching is the result of a state transition. Note the result of some obscure VDOM lifecycle hook
+
+Why is the component there? Cause Router mounted it
+  - Ah, there is secretly state in the router
+  - Can we get it out?
+
+
+
+---
+
+Webmodeler test example
+
+Reduce complexity by:
+
+reducing state, deriving as much as possible
