@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "config": {
-    "build": "--output-file index.html --style src/slides.css --template assets/template.html --script assets/slides.js  --include-remark tmp/slides.md"
+    "build": "--output-file index.html --style src/slides.css --template assets/template.html --script assets/slides.js tmp/slides.md"
   },
   "scripts": {
     "build": "node assets/build.js && markdown-to-slides $npm_package_config_build",

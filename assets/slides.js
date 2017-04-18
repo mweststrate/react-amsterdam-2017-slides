@@ -1,14 +1,8 @@
 var slideshow = remark.create({
     ratio: '16:9',
     highlightLanguage: 'javascript',
-    navigation: {
-        scroll: false,
-        touch: true,
-        click: false
-    },
     highlightStyle: 'monokai'
 });
-slideshow.pause()
 
 function addClass(node, clazz) {
     node.className = node.className + " " + clazz
@@ -26,6 +20,7 @@ document.addEventListener('keydown', (event) => {
     switch (keyName) {
         case "PageUp":
         case "ArrowLeft":
+            event.stopPropagation();
             const prev = document.querySelectorAll(".remark-visible .appeared")
             if (prev.length)
                 addClass(removeClass(prev[prev.length - 1], "appeared"), "appear")
@@ -39,6 +34,7 @@ document.addEventListener('keydown', (event) => {
             break
         case "PageDown":
         case "ArrowRight":
+            event.stopPropagation();
             const next = document.querySelector(".remark-visible .appear")
             if (next)
                 addClass(removeClass(next, "appear"), "appeared")
