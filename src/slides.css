@@ -1,13 +1,12 @@
-@import 'https://fonts.googleapis.com/css?family=Cormorant+Garamond';
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Raleway');
 
 h1, h2, h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     letter-spacing: 4px;
 }
 
 body {
-    font-family: 'Open Sans Condensed', sans-serif;
+    font-family: 'Raleway', sans-serif;
     color: black;
 }
 
@@ -21,7 +20,7 @@ h1 {
     display: block;
     text-align: center;
     width: calc(1280px - 4em);
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
     font-size: 40px;
 }
 
@@ -128,11 +127,8 @@ ul, ol {
 }
 
 .fullscreen img {
-    top: 0px;
-    left: 0px;
     vertical-align: middle;
     height: 681px;
-    position: absolute;
 }
 
 .stacked img {

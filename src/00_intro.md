@@ -23,6 +23,8 @@ By <a href="//commons.wikimedia.org/wiki/User:Tataryn77" class="mw-redirect" tit
 
 ---
 
+class: top fullscreen center
+
 ![Asterix](img/asterix.jpg)
 
 ---
@@ -33,6 +35,8 @@ By <a href="//commons.wikimedia.org/wiki/User:Tataryn77" class="mw-redirect" tit
 By <a href="https://en.wikipedia.org/wiki/User:Kieran4" class="extiw" title="en:User:Kieran4">Kieran4</a> - <a href="https://en.wikipedia.org/wiki/File:Napoleoniceurope.png" class="extiw" title="en:File:Napoleoniceurope.png">en:File:Napoleoniceurope.png</a>Napoleon Bonaparte by Alan Schom, map at start of book, <a href="http://creativecommons.org/licenses/by-sa/3.0" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=6006526">Link</a>
 -->
 ---
+
+class: top fullscreen center
 
 ![Napoleon](img/1200px-Napoleon_Wagram.jpg)
 
@@ -47,28 +51,22 @@ By <a href="https://en.wikipedia.org/wiki/Horace_Vernet" class="extiw" title="en
 
 ---
 
-## Small, isolated problems are much easier to deal with than intertwined big problems
+class: top fullscreen center
+
+![ken](img/ken.jpg)
 
 ---
 
-# Build a webapp?
-
-1. .appear[Pick a tool: React]
-2. .appear[Pick a compiler...]
-3. .appear[Pick a bundler...]
-3. .appear[Get them to work together]
-4. .appear[Build the web app]
-
-.appear[<img src="img/OwlProblem.jpg" style="position:absolute;left: 40px; top:200px; width: 400px"/>]
+## Small, isolated problems<br/>are much easier to deal with<br/>than intertwined big problems
 
 ---
 
 # Reactive programming
 
 .appear[
-    > The essence of functional reactive programming is to specify the dynamic behavior of a value completely at the time of declaration.
+The essence of functional reactive programming is to specify the dynamic behavior of a value completely at the time of declaration.
 
-    Heinrich Apfelmus, reactive-banana
+_Heinrich Apfelmus, reactive-banana_
 ]
 
 ---
@@ -81,19 +79,19 @@ Separate the _how_ from the _when_ question
 
 ```javascript
 class Timer extends React.Component {
-  render() {
-    return (
-      <div>Seconds Elapsed: {this.state.secondsElapsed}</div>
-    );
-  }
+    render() {
+        return (
+            <div>Seconds Elapsed: {this.state.secondsElapsed}</div>
+        )
+    }
 
-  componentDidMount() {
-    setInterval(() => {
-       this.setState(prevState => ({
-          secondsElapsed: prevState.secondsElapsed + 1
-       }))
-     }, 1000)
-  }
+    componentDidMount() {
+        setInterval(() => {
+            this.setState(prevState => ({
+                secondsElapsed: prevState.secondsElapsed + 1
+            }))
+        }, 1000)
+    }
 }
 ```
 
@@ -115,12 +113,21 @@ class Timer extends React.Component {
 * .appear[...But strongly couples _state_ and _view_]
   * .appear[Hard to share state]
   * .appear[Hard to move components around]
-  * .appear[Hard test state & logic in isolation]
-  * .appear[Hard test components in isolation]
+  * .appear[Hard to optimize]
+  * .appear[Hard to test state & logic in isolation]
+  * .appear[Hard to test components in isolation]
+
+???
+
+Now there is an ongoing debate on whether just setState alone doesn't suffice.
+That might be the case for relatively simple apps indeed.
+However, at mendix our domain state alone consists of 500, highly cyclical classes.
+So for us putting all our state in component state is kinda outof the question.
+
 
 ---
 
-## We need more divide and conquer!
+## We to divide and conquer more!
 
 <img src="img/napoleon2.jpg" />
 .appear[
@@ -199,7 +206,7 @@ Makes sure .box1[data] is always, automatically and efficiently reflected in .bo
             <div class="appear">setState</appear>
         </td>
         <td rowspan="2" class="box-state">
-            <div>component state</div>
+            <div>component state & props</div>
         </td>
         <td class="box-computed">
             <div class="appear">render()</appear>
@@ -217,6 +224,9 @@ Makes sure .box1[data] is always, automatically and efficiently reflected in .bo
 # MobX + React
 
 ```javascript
+import { observable } from "mobx"
+import { observer } from "mobx-react"
+
 const state = observable({
     secondsElapsed: 0
 })
@@ -240,7 +250,7 @@ ReactDOM.render(<Timer />, document.body)
 # Recap
 
 * Reactive programming separates the _how_ from the _when_.<br/>Eliminates the need to call `render()`<br/><br/>
-* MobX separates the _state_ from the _view_.<br/>Components will now react to state _outside_ component.
+* MobX separates the _state_ from the _view_.<br/>Components can now react to state _outside_ component.
 
 ---
 
@@ -248,42 +258,61 @@ ReactDOM.render(<Timer />, document.body)
 
 `view = f(state)`
 
-.appear[What happens if we eliminate `f`?]
-.appear[
-    * No view
-    * Is the app still usable?
-    * Can we still navigate around?
-    * Without smart components, who will fetch data?
+* .appear[What happens if we eliminate `f`?]
+* .appear[Is the app still usable?]
+* .appear[How to navigate around without anchors?]
+* .appear[Who will fetch data without smart components?]
+
+---
+
+## Can we make our UI dumb enough to make our app usable without it?
+
+---
+
+class: fullscreen
+
+<video id="shopMovie" src="img/shop.mp4" height="700px" controls></video>
+
+---
+
+class: top
+
+<img src="img/napoleon3.jpg" style="float:left;position:relative;top:-1em;left:-1em;" />
+
+.right[
+## We divided state and view
+
+We can now conquer them one by one
 ]
-.appear[Can we make our UI dumb enough to make our app usable without it?]
+
+???
+
+Imagine what this means for testing
 
 ---
 
-Demo
+# How was this achieved
+
+1. .appear[Don't depend on `componentDidMount` for data fetching]
+2. .appear[Don't depend on router / links for navigation]
+3. .appear[Leverage the 4 reactive boxes]
 
 ---
 
-## `componentDidMount` fetching data makes state dependent on the view
-
-_Placing async effects also often happens in some component’s componentDidMount, which is an ad-hoc solution, since components are often meant only for view concerns (markup).
-It often feels incorrect to mix these concerns since Redux and its async solutions are meant to separate them from markup._
-
-André Staltz in "Some Problems with React/Redux"
-
----
+# Eliminating `componentDidMount`
 
 * .appear[Q: **Why do we want to fetch data?**]
 * .appear[A: <i>Component needs it</i>]
 * .appear[Q: **Why does component exist?**]
+* .appear[A: <i>42</i>]
 * .appear[A: <i>It's just always there</i>]
 * .appear[A: <i>Parent is in certain state</i>]
 * .appear[A: <i>The router mounted it</i>]
-* .appear[A: <i>42</i>]
 * .appear[Q: **Can we make component caller responsible?**]
 
 ---
 
-# ... If the component is always there...
+# If the component is always there...
 
 ```javascript
 class BookList {
@@ -304,7 +333,7 @@ ReactDOM.render(<BookList store={store} />)
 
 ---
 
-# ... If the component is always there...
+# ... fetching can be done outside tree
 
 ```javascript
 const BookList = ({ store } =>
@@ -318,9 +347,14 @@ store.fetchAllTheData()
 ReactDOM.render(<BookList store={store} />)
 ```
 
+???
+
+Now remember, the reason that this lifting is possible is because with mobX our components can react to state changes outside the component
+
 ---
 
-# ... Because of parent state...
+# If parent causes existence...
+
 
 ```javascript
 class HomePage {
@@ -341,7 +375,7 @@ class HomePage {
 
 ---
 
-# ... Because of parent state...
+# ...state transition can trigger fetch
 
 ```javascript
 class HomePage {
@@ -361,168 +395,298 @@ class HomePage {
 }
 ```
 
+???
+
+This is the most common case. And the reasoing behind this lift is:
+if the existence of a component is a reaction to a state change,
+then there is somewhere an action that causes that state change to happen, and we can lift
+our data fetching to that location.
+
 ---
 
-# ... being mounted by router...
+# ...or use a reactive side effect
+
+
+```javascript
+import { when } from "mobx"
+
+when(
+    () => store.showBooks === true,
+    () => store.fetchAllTheData()
+)
+```
+
+
+???
+
+More experienced MobX users take this even futher and declare data fetches as being reactions on their own, that looks like this.
+But in this talk we keep it simple and just model them as part of our actions
+
+---
+
+# If router mounts component...
 
 ```javascript
 <Route path="/books/" component={ BookList } />
 ```
 
-.appear[Where to put fetch responsibility?]
+.appear[...there is no action outside tree to lift fetching to]
 
-.appear[Architectural mismatch]
-
-.appear[![routing](img/routing1.png)]
 ---
 
-## If view is to be purely .box3[derived] from the .box1[state], then routing should affect our .box1[state], not the .box4[component tree]
+class: fullscreen
 
-![routing](img/routing2.png)
+<img src="img/routing4.png" />
 
-```javascript
-<Route path="/books/" onEnter={ () => store.showBooks() } />
-```
+---
+
+class: fullscreen
+
+<img src="img/routing5.png" />
+
+<div style="position:absolute;top:35px;left:755px">URL change</div>
+
+---
+
+class: fullscreen
+
+<img src="img/routing6.png" />
+
+<div style="position:absolute;top:35px;left:755px">URL change</div>
 
 ---
 
 ## The bookshop architecture
 
 .appear[(and Mendix WebModeler architecture)]
+
 ---
 
-# Intermezzo: capturing app state in stores
+```javascript
+import { Provider } from "mobx-react"
 
-App usage:
-
-```
 const shop = new ShopStore(window.fetch)
+window.shop = shop // for demo / debug
 
 ReactDOM.render(
-  <Provider shop={shop}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+    <Provider shop={shop}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
 )
 ```
 
 ---
-
-# Intermezzo: capturing app state in stores
 
 ```javascript
 import BookStore from './BookStore'
 import CartStore from './CartStore'
 
 export default class ShopStore {
-  fetch
-  bookStore
-  cartStore
+    fetch
+    bookStore
+    cartStore
 
-  constructor(fetcher) {
-    this.fetch = fetcher
-    this.bookStore = new BookStore(this)
-    this.cart = new CartStore(this)
-    this.bookStore.loadBooks()
-  }
+    constructor(fetcher) {
+        this.fetch = fetcher
+        this.bookStore = new BookStore(this)
+        this.cart = new CartStore(this)
+        this.bookStore.loadBooks()
+    }
 }
 ```
 
 ---
 
-# Intermezzo: capturing app state in stores
-
-Testing:
 
 ```javascript
-const bookFetcher = () => Promise.resolve(JSON.parse(fs.readFileSync("./test-assets/books.json")))
+import { when } from "mobx"
+
+const bookFetcher = () => Promise.resolve(/* Fixed data set */)
 
 test("It should start loading books when starting the app", () => {
     const shop = new ShopStore(bookfetcher)
     expect(shop.bookStore.isLoading).toBe(true)
+
+    when(
+        () => !shop.isLoading,
+        () => {
+            expect(shop.books.size).toBe(4)
+        }
+    )
 })
-
 ```
 
 ---
 
-# Capturing navigation state
+class: fullscreen
+
+<img src="img/routing6.png" />
+
+<div style="position:absolute;top:35px;left:755px">URL change</div>
+
+???
+
+If view is to be purely .box3[derived] from the .box1[state], then routing should affect our .box1[state], not the .box4[component tree]
+
+---
+
+class: fullscreen
+
+<img src="img/routing7.png" />
+
+<div style="position:absolute;top:35px;left:55px">URL change</div>
+
+---
+
+```javascript
+<Route path="/books/" component={ BookList } />
+```
+
+becomes
+
+```javascript
+<Route path="/books/" onEnter={ () => shop.openBooksPage() } />
+```
+---
+
+## Capturing navigation state
+
+---
 
 ```javascript
 class ViewStore {
-  @observable page = "books"
-  @observable selectedBookId = null
+    @observable page = "books"
+    @observable selectedBookId = null
 }
 ```
 
 ---
 
-# Capturing navigation state
-
 ```javascript
 class ViewStore {
-  @observable page = "books"
-  @observable selectedBookId = null
+    @observable page = "books"
+    @observable selectedBookId = null
 
-  @action openBooksPage() {
-    this.page = "books"
-  }
+    @action openBooksPage() {
+        this.page = "books"
+    }
 
-  @action openBookPageById(id) {
-    this.page = "book"
-    this.selectedBookId = id
-  }
+    @action openBookPageById(id) {
+        this.page = "book"
+        this.selectedBookId = id
+        this.shop.bookStore.fetchBookDetails(id)
+    }
 }
 ```
 
 ---
 
-# Testing app flow
+## Testing user flow
+
+---
 
 ```javascript
 it('as a user I can buy books', (done) => {
-  const shop = new ShopStore(bookFetcher)
+    const shop = new ShopStore(bookFetcher)
 
-  shop.view.openBooksPage()
-  expect(shop.view.page).toBe("books")
-  expect(shop.bookStore.isLoading).toBe(true)
+    shop.view.openBooksPage()
+    when(
+        () => !shop.isLoading,
+        () => {
+            expect(shop.books.size).toBe(4)
 
-  when(
-      () => !shop.isLoading,
-      () => {
-          expect(shop.books.size).toBe(4)
+            shop.view.openBookPageById("978-1423103349")
+            when(
+                () => !shop.isLoading,
+                () => {
+                    expect(shop.view.selectedBook.name).toBe("The Sea of Monsters")
+                    shop.cart.addBook(shop.view.selectedBook)
 
-          shop.view.openBookPageById("978-1423103349")
-          expect(shop.view.selectedBook.name).toBe("The Sea of Monsters")
+                    shop.view.openCartPage()
+                    expect(shop.cart.canCheckout).toBe(true)
 
-          shop.cart.addBook(shop.view.selectedBook)
-          shop.view.openCartPage()
-          expect(shop.cart.canCheckout).toBe(true)
-
-          shop.cart.checkout()
-          expect(shop.cart.entries.length).toBe(0)
-          expect(shop.cart.canCheckout).toBe(false)
-          done()
-      }
-  )
+                    shop.cart.checkout()
+                    expect(shop.cart.canCheckout).toBe(false)
+                    done()
+                }
+            )
+        }
+    )
 })
 ```
 
 ---
 
-# Rendering
+## Rendering
+
+---
 
 ```javascript
-const Books = observer(({store}) =>
-    store.bookStore.isLoading
-        ? <div>Wait for it...</div>
-        : <div>{ store.bookStore.books.map(book =>
-            <Book key={book.id} book={book} />
-        )}
-)
+const App = ({ shop }) => (
+    <div className="App">
+        <AppHeader />
+        {shop.isLoading
+            ? <h1>Loading...</h1>
+            : renderContents(shop.view)
+        }
+    </div>
+))
+
+function renderContents(viewStore) {
+    switch(viewStore.page) {
+        case "books":
+            return <Books />
+        case "book":
+            return <BookDetails book={viewStore.selectedBook} />
+        // etc...
+    }
+}
+
+export default inject("shop")(observer(App))
 ```
 
+???
+
 .appear[Bye, `componentDidMount`!]
+
+---
+
+```javascript
+const BookDetails = ({book, shop}) => (
+    <section className="Page-book">
+        <h2>{book.name}</h2>
+        <p><i>By: {book.author}</i></p>
+        <p>Price: {book.price} €</p>
+        <button
+            onClick={() => {
+                shop.cart.addBook(book);
+            }}
+        >
+            Add to cart
+        </button>
+    </section>
+)))
+
+export default inject("shop")(observer(BookDetails))
+```
+
+---
+
+```javascript
+const BookEntry = inject("shop")(observer(({book, shop}) => (
+  <li>
+    <a
+      href={`/book/${book.id}`}
+      onClick={(e) => {
+        e.preventDefault();
+        shop.view.openBookPage(book);
+        return false;
+      }}
+    >{book.name}</a>
+  </li>
+)))
+```
 
 ---
 
@@ -530,29 +694,23 @@ const Books = observer(({store}) =>
 
 ---
 
-# Reacting to route changes
+```javascript
+import { Router } from "director"
 
-```
-const router = createRouter({
-  "/book/:bookId": ({bookId}) => shop.view.openBookPageById(bookId),
-  "/cart":         shop.view.openCartPage,
-  "/":             shop.view.openBooksPage
-})
-
-window.onpopstate = function historyChange(ev) {
-  if (ev.type === "popstate")
-    router(window.location.pathname)
-}
-
-router(window.location.pathname)
+// React to route changes
+new Router({
+    "/book/:bookId": (bookId) => shop.view.openBookPageById(bookId),
+    "/cart": shop.view.openCartPage,
+    "/": shop.view.openBooksPage
+}).configure({
+    html5history: true
+}).init()
 ```
 
 ---
 
-# The URL as yet-another-view
-
 ```javascript
-export default class ViewStore {
+class ViewStore {
   @observable page = "books"
   @observable selectedBookId = null
 
@@ -569,9 +727,9 @@ export default class ViewStore {
 
 ---
 
-# Side effect: update browser history
-
 ```javascript
+import { reaction } from "mobx"
+
 reaction(
   () => shop.view.currentUrl,
   (path) => {
@@ -580,34 +738,39 @@ reaction(
   }
 )
 ```
-
 ---
 
 <img src="img/routing3.png" width="900px" />
 
 ---
 
-# Divide & conquer: separate UI and state
+## Q: Is it ok to still have some component state?
 
+.appear[A: Yes]
+
+---
+
+## Q: Will this architecture work with Redux?
+
+.appear[A: Yes]
+
+---
+
+# Separating state and view
+
+* Enables independent development of stores and components
 * Makes user flow testing a breeze
-* Allows independent development of stores, logic and components
 
 1. Capture crucial app state in a browser unaware store
 2. UI just renders this state
-3. Don't make state dependent component hooks
-4.  Browser url and history are just another set kind of actions / reactions
+3. Don't make state dependent on component hooks
+4. Routing & history is just another set kind of actions / reactions
 
 ---
 
-# Need more?
+# More info
 
+* [Demo repository](https://github.com/mweststrate/react-mobx-shop/tree/react-amsterdam-2017/src)
+* [Workshop @Xebia, June 1st](https://training.xebia.com/developer-skills/building-real-life-apps-with-react-mob/)
 * [Blog: How to decouple state and UI (a.k.a. you don’t need componentWillMount)](https://medium.com/@mweststrate/how-to-decouple-state-and-ui-a-k-a-you-dont-need-componentwillmount-cc90b787aa37#.q5ksxr1is)
-* [yester](http://basarat.com/yester/#/) - Hooks, strong typed
-* [mobx-router](https://www.npmjs.com/package/mobx-router) - Hooks, renders comps, store structure
-* Or generic libraries, `directory`, or `history` + `path-to-regexp`
-
-workshop 2 juni Xebia
-
-[Egghead course](https://egghead.io/courses/mobx-fundamentals)
-
----
+* [MobX fundamentals, free egghead course](https://egghead.io/courses/mobx-fundamentals)

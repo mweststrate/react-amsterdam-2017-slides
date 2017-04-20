@@ -18,6 +18,8 @@ document.addEventListener('keydown', (event) => {
     const keyName = event.key;
     console.log(event.key)
     switch (keyName) {
+        case "v":
+            break
         case "PageUp":
         case "ArrowLeft":
             event.stopPropagation();
@@ -48,3 +50,6 @@ document.addEventListener('keydown', (event) => {
             break
     }
 }, false);
+
+const video = document.getElementById("shopMovie")
+video.playbackRate = 2
