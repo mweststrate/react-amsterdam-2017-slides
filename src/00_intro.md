@@ -8,9 +8,11 @@ Michel Weststrate - Mendix - @mweststrate
 <br/><br/>
 
 <img src="img/mendix-logo.png" height="80px" /><br/>
-.appear[
-    <small>(Nr 1. best tech employer in NL according to Glassdoor.com)</small>
-]
+<small>(Nr 1. best tech employer in NL according to Glassdoor.com)</small>
+
+???
+
+5 o clock, over time
 
 ---
 
@@ -109,7 +111,6 @@ class Timer extends React.Component {
 ---
 
 * .appear[React only reacts to component state changes]
-* .appear[Separates the _how_ and _when_]
 * .appear[...But strongly couples _state_ and _view_]
   * .appear[Hard to share state]
   * .appear[Hard to move components around]
@@ -336,7 +337,7 @@ ReactDOM.render(<BookList store={store} />)
 # ... fetching can be done outside tree
 
 ```javascript
-const BookList = ({ store } =>
+const BookList = observer(({ store }) =>
     store.books.map(book => <stuff />)
 )
 ```
@@ -525,9 +526,9 @@ class: fullscreen
 
 <div style="position:absolute;top:35px;left:755px">URL change</div>
 
-???
+---
 
-If view is to be purely .box3[derived] from the .box1[state], then routing should affect our .box1[state], not the .box4[component tree]
+## If view is to be purely .box3[derived] from the .box1[state], then routing should affect our .box1[state], not the .box4[component tree]
 
 ---
 
@@ -615,6 +616,12 @@ it('as a user I can buy books', (done) => {
     )
 })
 ```
+
+---
+
+class: fullscreen
+
+<img src="img/napoleon5.jpg" />
 
 ---
 
@@ -744,17 +751,7 @@ reaction(
 
 ---
 
-## Q: Is it ok to still have some component state?
-
-.appear[A: Yes]
-
----
-
-## Q: Will this architecture work with Redux?
-
-.appear[A: Yes]
-
----
+class: fullscreen
 
 # Separating state and view
 
@@ -766,6 +763,10 @@ reaction(
 3. Don't make state dependent on component hooks
 4. Routing & history is just another set kind of actions / reactions
 
+.appear[
+<img src="img/napoleon4.jpg" />
+]
+
 ---
 
 # More info
@@ -774,3 +775,17 @@ reaction(
 * [Workshop @Xebia, June 1st](https://training.xebia.com/developer-skills/building-real-life-apps-with-react-mob/)
 * [Blog: How to decouple state and UI (a.k.a. you don’t need componentWillMount)](https://medium.com/@mweststrate/how-to-decouple-state-and-ui-a-k-a-you-dont-need-componentwillmount-cc90b787aa37#.q5ksxr1is)
 * [MobX fundamentals, free egghead course](https://egghead.io/courses/mobx-fundamentals)
+
+---
+
+## Q: Is it ok to still have some component state?
+
+.appear[A: Yes]
+
+---
+
+## Q: Will this architecture work with Redux?
+
+.appear[A: Yes]
+
+---
