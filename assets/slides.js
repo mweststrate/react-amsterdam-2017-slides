@@ -52,4 +52,4 @@ document.addEventListener('keydown', (event) => {
 }, false);
 
 const video = document.getElementById("shopMovie")
-video.playbackRate = 2
+video.playbackRate = 1.5

@@ -59,7 +59,7 @@ class: top fullscreen center
 
 ---
 
-## Small, isolated problems<br/>are much easier to deal with<br/>than intertwined big problems
+## Small, isolated problems<br/>are much easier to deal with<br/>than big intertwined problems
 
 ---
 
@@ -75,7 +75,7 @@ _Heinrich Apfelmus, reactive-banana_
 
 # Reactive programming
 
-Separate the _how_ from the _when_ question
+Separates the _how-_ from the _when_ question
 
 ---
 
@@ -128,12 +128,16 @@ So for us putting all our state in component state is kinda outof the question.
 
 ---
 
-## We to divide and conquer more!
+class: fullscreen
 
 <img src="img/napoleon2.jpg" />
 .appear[
-<img src="img/mobx2.png" style="position:absolute;top:100px;left:480px;width:150px" />
+<img src="img/mobx2.png" style="position:absolute;top:10px;left:410px;width:150px;height:150px;    border: 3px solid white;border-radius: 15px;" />
 ]
+
+???
+
+## We neeed more divide and conquer!
 
 ---
 
@@ -144,18 +148,18 @@ So for us putting all our state in component state is kinda outof the question.
         <td>Output</td>
     <tr>
         <td rowspan="2" class="box-actions">
-            <div class="appear"><i>@action</i>'s<br/><br/>modify state</div>
+            <div class="appear"><i>@action</i>'s<br/>modify state</div>
         </td>
         <td rowspan="2" class="box-state">
-            <div><i>@observable</i> state<br/><br/>the data your app is about</div>
+            <div><i>@observable</i> application state<br/></div>
         </td>
         <td class="box-computed">
-            <div class="appear"><i>@computed</i> values<br/><br/>all data that can be expressed in terms of other data</div>
+            <div class="appear"><i>@computed</i> values<br/></div>
         </td>
     </tr>
     <tr>
         <td class="box-reactions">
-            <div class="appear"><i>reaction</i>'s<br/><br/>trigger side effects when necessary</div>
+            <div class="appear"><i>reaction</i>'s<br/>to trigger side effects</div>
         </td>
     </tr>
 </table>
@@ -165,7 +169,7 @@ So for us putting all our state in component state is kinda outof the question.
 
 # MobX
 
-Makes sure .box1[data] is always, automatically and efficiently reflected in .box3[derived values] and that necessary .box4[side effects] are fired.
+Makes sure .box1[data] is always, automatically and efficiently reflected in all .box3[derived values] and that necessary .box4[side effects] are fired.
 
 ---
 
@@ -173,10 +177,10 @@ Makes sure .box1[data] is always, automatically and efficiently reflected in .bo
 
 <img src="img/excel.png" height="150px" />
 
+* .appear[Natural way of thinking]
 * .appear[Pattern used in the most successful software product]
 * .appear[Makes programming more declarative]
-* .appear[Natural way of thinking]
-* .appear[Helps to define minimal state]
+* .appear[Helps to define _minimal_ state]
 
 ---
 
@@ -376,7 +380,7 @@ class HomePage {
 
 ---
 
-# ...state transition can trigger fetch
+# ...state transition can trigger fetch!
 
 ```javascript
 class HomePage {
@@ -457,25 +461,13 @@ class: fullscreen
 
 ---
 
-## The bookshop architecture
-
-.appear[(and Mendix WebModeler architecture)]
+<img src="img/ransom.png" />
 
 ---
 
-```javascript
-import { Provider } from "mobx-react"
+## The bookshop architecture
 
-const shop = new ShopStore(window.fetch)
-window.shop = shop // for demo / debug
-
-ReactDOM.render(
-    <Provider shop={shop}>
-        <App />
-    </Provider>,
-    document.getElementById('root')
-)
-```
+(and Mendix WebModeler architecture)
 
 ---
 
@@ -498,7 +490,6 @@ export default class ShopStore {
 ```
 
 ---
-
 
 ```javascript
 import { when } from "mobx"
@@ -528,7 +519,7 @@ class: fullscreen
 
 ---
 
-## If view is to be purely .box3[derived] from the .box1[state], then routing should affect our .box1[state], not the .box4[component tree]
+## If the view is to be purely .box3[derived] from the .box1[state], then routing should affect .box1[state], not the derived .box4[component tree]
 
 ---
 
@@ -626,6 +617,22 @@ class: fullscreen
 ---
 
 ## Rendering
+
+---
+
+```javascript
+import { Provider } from "mobx-react"
+
+const shop = new ShopStore(window.fetch)
+window.shop = shop // for demo / debug
+
+ReactDOM.render(
+    <Provider shop={shop}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+)
+```
 
 ---
 
@@ -747,8 +754,27 @@ reaction(
 ```
 ---
 
-<img src="img/routing3.png" width="900px" />
 
+<table width="100%">
+    <tr>
+        <td rowspan="2" class="box-actions">
+            <div>route change</div>
+        </td>
+        <td rowspan="2" class="box-state">
+            <div></div>
+        </td>
+        <td class="box-computed">
+            <div></div>
+        </td>
+    </tr>
+    <tr>
+        <td class="box-reactions">
+            <div>DOM update<br/><br/>Location update</div>
+        </td>
+    </tr>
+</table>
+
+---
 ---
 
 class: fullscreen
@@ -775,6 +801,10 @@ class: fullscreen
 * [Workshop @Xebia, June 1st](https://training.xebia.com/developer-skills/building-real-life-apps-with-react-mob/)
 * [Blog: How to decouple state and UI (a.k.a. you don’t need componentWillMount)](https://medium.com/@mweststrate/how-to-decouple-state-and-ui-a-k-a-you-dont-need-componentwillmount-cc90b787aa37#.q5ksxr1is)
 * [MobX fundamentals, free egghead course](https://egghead.io/courses/mobx-fundamentals)
+
+<small>p.s. we're hiring, visit the Mendix booth!</small>
+
+<small>Prizes!</small>
 
 ---
 
